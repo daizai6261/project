@@ -40,6 +40,9 @@ class Configer(configparser.ConfigParser):
         value = self.get_value("WORD", param)
         return value
 
+    def run_param(self, param):
+        value = self.get_value("RUN_PARAM", param)
+        return value
 
 
     def speaker_slience(self, param):

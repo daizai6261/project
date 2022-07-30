@@ -4,6 +4,7 @@ from script.utils.utilsfile import utilsFile
 from script.piccompress.piccompress import picCompress
 from script.contentmgr import contentMgr
 from script.tts.pelbstts import pTTS
+from script.base.configer import configer
 from script.tts.alytts import alyTTSApi
 from script.base.filefinder import pFFinder
 # from AnimeGAN.test import test as gen
@@ -21,14 +22,15 @@ import xlrd
 
 
 # 341,
-data = xlrd.open_workbook("D:/Workship/Pelbs/Gen/data/系列书名.xlsx")
+# data = xlrd.open_workbook("D:/Workship/Pelbs/Gen/data/系列书名.xlsx")
+data = xlrd.open_workbook(configer.run_param("EXCEL_PATH"))
 data_sheet1 = data.sheets()[0]
 rows = data_sheet1.nrows
 book_idxs = data_sheet1.col_values(0)[1:]
 book_idx_list = list(map(int, book_idxs))  # 99999       73, 82
 # 卡通化模型位置
-anime_checkPoint_dir = "D:/Workship/Pelbs/Gen/project/AnimeGAN/checkpoint/AnimeGAN_Hayao_lsgan_300_300_1_3_10"
-
+# anime_checkPoint_dir = "D:/Workship/Pelbs/Gen/project/AnimeGAN/checkpoint/AnimeGAN_Hayao_lsgan_300_300_1_3_10"
+anime_checkPoint_dir =  configer.run_param("ANIMEGAN_CHECKPOINT_PATH")
 
 def book_create():
     for index, id_ in enumerate(book_idx_list):

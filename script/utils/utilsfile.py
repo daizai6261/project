@@ -14,7 +14,8 @@ class UtilsFile():
         self.str_book_idx = str(book_idx)
         self.speaker = configer.program_param("CURRENT_SPEAKER").lower()
 
-        self.paths["work_path"]  = "D:/Workship/Pelbs/Gen/"
+        # self.paths["work_path"]  = "D:/Workship/Pelbs/Gen/"
+        self.paths["work_path"]  = configer.run_param("PROJECT_PATH")
         self.paths["temp_path"]  = self.paths["work_path"] + "temp/"
         self.paths["temp_texture_path"]  = self.paths["temp_path"] + "texture/"
         self.paths["temp_sound_path"]  = self.paths["temp_path"] + "sound/"
@@ -78,7 +79,8 @@ class UtilsFile():
     def init_book(self):
         self.paths = {}
         self.book = [] #复习单元
-        data = xlrd.open_workbook("D:/Workship/Pelbs/Gen/data/系列书名.xlsx")
+        # data = xlrd.open_workbook("D:/Workship/Pelbs/Gen/data/系列书名.xlsx")
+        data = xlrd.open_workbook(configer.run_param("EXCEL_PATH"))
         data_sheet1 = data.sheets()[0]
         rows = data_sheet1.nrows
         book_idxs = data_sheet1.col_values(0)[1:]

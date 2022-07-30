@@ -3,11 +3,12 @@ from script.utils.utils import utils
 import os
 import time
 from script.tts.alytts import alyTTSApi
+from script.base.configer import configer
 
 
 def sentence_create():
-    work_path = "D:/Workship/Pelbs/Gen/"
-
+    # work_path = "D:/Workship/Pelbs/Gen/"
+    work_path = configer.run_param("PROJECT_PATH")
     # 单词输入路径
     word_file_path = work_path + "res/org/sentence_file/"
     # 语音输出路径
