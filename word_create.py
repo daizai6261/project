@@ -16,7 +16,11 @@ def word_create():
     utils.mkdir(word_audio_output_path)
 
     files = os.listdir(word_file_path)
-
+    # 单词出错路径
+    error_output_path = work_path + "error/"
+    error_word_output_path = error_output_path + "word/"
+    if os.path.exists(error_word_output_path):
+        utils.del_file(error_word_output_path)
     for file in files:
         file_path = word_file_path + file
         tts_idx_path = work_path + "data/tts_idx.txt"
@@ -26,6 +30,7 @@ def word_create():
         book_num = str(file.split("_")[1].split(".")[0])
         osd_sound_path = word_audio_output_path + "book" + book_num + "/osd_sound/"
         if not cur_idx: cur_idx = 1
+        msg = ""
         for num, line in enumerate(file_content):
             if (len(line) == 0 or line == "\n"):
                 continue
@@ -33,8 +38,9 @@ def word_create():
                 time.sleep(1)
                 words = line.split("\t")
                 if(len(words) != 3):
+                    msg += "【" + file + "】中的第" + str(num + 1) + "行的tab个数不对\n"
                     print("【" + file + "】中的第" + str(num + 1) + "行的tab个数不对")
-                    return
+                    continue
                 sound_file = words[0]
                 englishWord = words[1]
                 unit_folder = sound_file.split("_")[0]
@@ -43,7 +49,13 @@ def word_create():
                 utils.mkdir(osd_sound_path + unit_folder)
                 print("txt2audio", sound_path)
                 alyTTSApi.tts(englishWord, sound_path)
-
+        if msg != "":
+            if not os.path.exists(error_word_output_path):
+                # 如果目标路径不存在原文件夹的话就创建
+                os.makedirs(error_word_output_path)
+            result_file = error_word_output_path + "book" + book_num + ".txt"
+            with open(result_file, "w", encoding="utf-8") as f:
+                f.write(msg)
 
 if __name__ == '__main__':
     # 单词音频生成
