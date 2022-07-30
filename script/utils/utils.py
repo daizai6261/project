@@ -255,7 +255,7 @@ class Utils():
                         temp_dict[sound_name_head] = 0
                         new_pos_index = 0
                     new_x_y_w_h_num = self.calc_y_x_w_y_num_V2(chinese_content, sound_name_head, new_pos_index, pic_w_h,
-                                                            type)
+                                                               type)
                     temp_dict[sound_name_head] = temp_dict[sound_name_head] + 1
 
                     new_line = sound_name + "\tEngTxtContent" + "\t" + chinese_content + "\t" + new_x_y_w_h_num
@@ -273,7 +273,7 @@ class Utils():
         pic_w_h = self.read_pics(dest_texture_path)
         with open(origin_file, "r", encoding="utf-8") as f:
             for line in f:
-                if(len(line) == 0 or line == "\n"):
+                if (len(line) == 0 or line == "\n"):
                     count = count + 1
                     continue
                 if count < 2:
@@ -294,10 +294,10 @@ class Utils():
                     # 情况为3、4、5的时候，position-3对应 0, 1, 2
                     else:
                         new_x_y_w_h_num = self.calc_y_x_w_y_num_V2(chinese_content,
-                                                                sound_name_head,
-                                                                position - 3,
-                                                                pic_w_h,
-                                                                type=0)
+                                                                   sound_name_head,
+                                                                   position - 3,
+                                                                   pic_w_h,
+                                                                   type=0)
                         new_line = sound_name + "\tEngTxtContent" + "\t" + chinese_content + "\t" + new_x_y_w_h_num
                 file_data += new_line
                 count = count + 1
@@ -374,7 +374,6 @@ class Utils():
                 return str(y) + "," + str(x) + "," + str(w) + "," + str(h) + "\t" + str(line_num) + "\n"
             else:
                 return ""
-
 
     def calc_y_x_w_y_num_V2(self, input="", pic_name="", new_pos_index=0, pic_w_h=0, type=0):
         '''
@@ -496,14 +495,25 @@ class Utils():
             shutil.copyfile(origin_pic_path, target_pic_path)
 
     # 判断tab键个数是否合法
-    def tab_valid(self, origin_file, title_word_num, content_word_num):
+    def tab_valid(self, origin_file, error_book_output_path, id, title_word_num, content_word_num):
         count = 0
+        msg = ""
+
+        txtName = ""
+
+        if title_word_num == 4:
+            txtName = "BookUnit" + str(id)
+        elif title_word_num == 5:
+            txtName = "EnglishAudio_" + str(id)
+
         with open(origin_file, "r", encoding="utf-8") as f:
             flag = 0
             for line in f:
                 if count < 2:
                     split_num = len(line.split("\t"))
                     if (split_num != title_word_num):
+                        msg += "[" + origin_file + "]中的tab键个数出错：第" + str(count + 1) + "行tab键个数为" + str(
+                            split_num - 1) + '\n'
                         print('\033[0;31;40m' + "[" + origin_file + "]中的tab键个数出错：第" + str(count + 1) + "行tab键个数为" + str(
                             split_num - 1) + '\033[0m')
                         flag = 1
@@ -511,11 +521,20 @@ class Utils():
                     line_contents = line.split("\t")
                     split_num = len(line_contents)
                     if (split_num != content_word_num):
+                        msg += "[" + origin_file + "]中的tab键个数出错：第" + str(count + 1) + "行tab键个数为" + str(
+                            split_num - 1) + '\n'
                         print('\033[0;31;40m' + "[" + origin_file + "]中的tab键个数出错：第" + str(count + 1) + "行tab键个数为" + str(
                             split_num - 1) + '\033[0m')
                         flag = 1
                 count = count + 1
             # print("[" + origin_file + "]中的tab键没问题")
+            if msg != "":
+                if not os.path.exists(error_book_output_path):
+                    # 如果目标路径不存在原文件夹的话就创建
+                    os.makedirs(error_book_output_path)
+                result_file = error_book_output_path + "book" + str(id) + "_" + txtName + ".txt"
+                with open(result_file, "w", encoding="utf-8") as f:
+                    f.write(msg)
             return flag == 0
 
 
