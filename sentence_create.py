@@ -4,7 +4,7 @@ import os
 import time
 from script.tts.alytts import alyTTSApi
 from script.base.configer import configer
-
+import shutil
 
 def sentence_create():
     # work_path = "D:/Workship/Pelbs/Gen/"
@@ -33,6 +33,11 @@ def sentence_create():
         book_name = file.split("_")[0].lower()
         book_num = str(file.split("_")[1].split(".")[0])
         osd_sound_path = word_audio_output_path + "book" + book_num + "/osd_sound/"
+        osd_configs_path = word_audio_output_path + "book" + book_num + "/osd_configs/"
+        if not os.path.exists(osd_configs_path):
+            # 如果目标路径不存在原文件夹的话就创建
+            os.makedirs(osd_configs_path)
+        shutil.copy(file_path, osd_configs_path)
         if not cur_idx: cur_idx = 1
         msg = ""
         for num, line in enumerate(file_content):
