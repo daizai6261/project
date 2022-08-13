@@ -40,7 +40,7 @@ class PelbsTTS:
         if not cur_idx: cur_idx = 1
         for num, line in enumerate(fpage_txt):
             if (num > 1) & (num > int(cur_idx)):
-                time.sleep(1)
+                # time.sleep(1)
                 sound_file = line.split("\t")[0]
                 englishWord = line.split("\t")[1]
                 unit_folder = sound_file.split("_")[0]

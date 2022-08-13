@@ -59,13 +59,31 @@ def book_create():
 
         #
         # # 判断tab是否出错
+        # is_valid_audio_file = utils.tab_valid(osd_en_audio_file, error_book_output_path, id_, 5, 4)
+        # is_valid_unit_file = utils.tab_valid(osd_book_unit_file, error_book_output_path, id_, 4, 4)
+        # if (is_valid_audio_file and is_valid_unit_file):
+        utils.modify_configs_v2(osd_en_audio_file, dest_en_audio_file)
+
+def book_valid():
+    is_valid = True
+    for index, id_ in enumerate(book_idx_list):
+        utilsFile.set_book_idx(index, id_)
+
+        # # 修改EnglishAudio文件
+        osd_en_audio_file = utilsFile.get("osd_en_audio_file")
+        osd_book_unit_file = utilsFile.get("osd_book_unit_file")
+
+        #
+        # # 判断tab是否出错
         is_valid_audio_file = utils.tab_valid(osd_en_audio_file, error_book_output_path, id_, 5, 4)
         is_valid_unit_file = utils.tab_valid(osd_book_unit_file, error_book_output_path, id_, 4, 4)
-        if (is_valid_audio_file and is_valid_unit_file):
-            utils.modify_configs_v2(osd_en_audio_file, dest_en_audio_file)
+        if (is_valid_audio_file == False or is_valid_unit_file == False):
+            is_valid = False
+    return is_valid
 
 
 if __name__ == '__main__':
     # 绘本生成
-    book_create()
+    if (book_valid()):
+        book_create()
     print("end")
