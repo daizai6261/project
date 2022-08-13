@@ -42,7 +42,7 @@ def book_create():
         utilsFile.set_book_idx(index, id_)
 
         # 合成音频
-        # pTTS.txt2audio()  # 音频生成
+        pTTS.txt2audio()  # 音频生成
         # # # #合成图片
         # # # # #
         # anime_test_dir = utilsFile.get("res_osd_texture_path")

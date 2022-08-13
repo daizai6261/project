@@ -7,6 +7,7 @@ from script.utils.utilsword import utilsWord
 from script.base.configer import configer
 import cv2
 from pydub import AudioSegment
+import pypinyin
 
 
 class Utils():
@@ -537,5 +538,10 @@ class Utils():
                     f.write(msg)
             return flag == 0
 
+    def pinyin(self, word):
+        res = ''
+        for i in pypinyin.pinyin(word, heteronym=False):
+            res = res + ''.join(i) + " "
+        return res
 
 utils = Utils()

@@ -31,6 +31,10 @@ def word_create():
         book_num = str(file.split("_")[1].split(".")[0])
         osd_sound_path = word_audio_output_path + "book" + book_num + "/osd_sound/"
         osd_configs_path = word_audio_output_path + "book" + book_num + "/osd_configs/"
+
+        # 删除原音频
+        utils.delete_folder(osd_sound_path)
+
         if not os.path.exists(osd_configs_path):
             # 如果目标路径不存在原文件夹的话就创建
             os.makedirs(osd_configs_path)

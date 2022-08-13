@@ -166,6 +166,8 @@ class PelbsTTS:
         osd_config_path = utilsFile.get("osd_config_path")
         dest_config_path = utilsFile.get("dest_config_path")
 
+        utils.delete_folder(dest_sound_path)
+
         unitList = os.listdir(temp_sound_path)
         for unit in unitList:
             res_floder_path = temp_sound_path + unit
