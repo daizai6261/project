@@ -37,6 +37,7 @@ class UtilsFile():
         self.paths["dest_config_path"] = self.paths["dest_path"] + "osd_configs/"
         # self.paths["dest_sound_path"] = self.paths["dest_path"] + self.speaker + "_sound/"
         self.paths["dest_sound_path"] = self.paths["dest_path"] + "osd_sound/"
+        self.paths["dest_sound_en_path"] = self.paths["dest_path"] + "osd_sound_en/"
         self.paths["dest_en_audio_file"] = self.paths["dest_config_path"] + "EnglishAudio_" + self.str_book_idx + ".txt"
 
 

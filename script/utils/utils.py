@@ -306,6 +306,46 @@ class Utils():
         with open(target_file, "w", encoding="utf-8") as f:
             f.write(file_data)
 
+    def modify_configs_v3(self, origin_file, target_file):
+        file_data = ""
+        count = 0
+        dest_texture_path = utilsFile.get("dest_texture_path")
+        pic_w_h = self.read_pics(dest_texture_path)
+        with open(origin_file, "r", encoding="utf-8") as f:
+            for line in f:
+                if (len(line) == 0 or line == "\n"):
+                    count = count + 1
+                    continue
+                if count < 2:
+                    new_line = line
+                else:
+                    line_contents = line.split("\t")
+                    sound_name = line_contents[0]
+                    english_content = line_contents[1]
+                    chinese_content = line_contents[2]
+                    position = int(line_contents[3])
+                    sound_name_head = sound_name.rsplit("_", 1)[0]
+                    pinyin = utils.pinyin(chinese_content)
+                    if position == 1:
+                        new_line = sound_name + "\tEngTxtContent" + "\t" + chinese_content + "\t" + "-10,-10,-10,-10" + "\t" + self.calc_y_x_w_y_num_V2(
+                            input=chinese_content, type=1)
+                    elif position == 2:
+                        new_line = sound_name + "\tEngTxtContent" + "\t" + chinese_content + "\t" + "-20,-20,-20,-20" + "\t" + self.calc_y_x_w_y_num_V2(
+                            input=chinese_content, type=1)
+                    # 情况为3、4、5的时候，position-3对应 0, 1, 2
+                    else:
+                        new_x_y_w_h_num = self.calc_y_x_w_y_num_V2(chinese_content,
+                                                                   sound_name_head,
+                                                                   position - 3,
+                                                                   pic_w_h,
+                                                                   type=0)
+                        new_line = sound_name + '\t' + english_content + "\t" + chinese_content + "\t" + pinyin.rstrip() + '\t' + new_x_y_w_h_num
+                file_data += new_line
+                count = count + 1
+        file_data = file_data[: -1]
+        with open(target_file, "w", encoding="utf-8") as f:
+            f.write(file_data)
+
     def calc_y_x_w_y_num(self, input="", pic_name="", new_pos_index=0, pic_w_h=0, type=0):
         '''
             :@param input: 输入的文本
@@ -543,5 +583,18 @@ class Utils():
         for i in pypinyin.pinyin(word, heteronym=False):
             res = res + ''.join(i) + " "
         return res
+
+    def mov_files(self, source_path, target_path):
+        ls = os.listdir(source_path)
+        for item in ls:
+            ls2 = os.listdir(source_path+item)
+            if not os.path.exists(target_path + item):
+                # 如果目标路径不存在原文件夹的话就创建
+                os.makedirs(target_path + item)
+            for sub_item in ls2:
+                new_file_name = sub_item.replace('_en', '')
+                if '_en' in sub_item:
+                    shutil.copyfile(source_path+item+"/"+sub_item, target_path + item + "/" + new_file_name)
+                    os.remove(source_path+item+"/"+sub_item)
 
 utils = Utils()
