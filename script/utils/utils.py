@@ -271,7 +271,8 @@ class Utils():
         file_data = ""
         count = 0
         dest_texture_path = utilsFile.get("dest_texture_path")
-        pic_w_h = self.read_pics(dest_texture_path)
+        # pic_w_h = self.read_pics(dest_texture_path)
+        pic_w_h = 0
         with open(origin_file, "r", encoding="utf-8") as f:
             for line in f:
                 if (len(line) == 0 or line == "\n"):
