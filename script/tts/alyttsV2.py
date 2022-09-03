@@ -212,8 +212,10 @@ class AlyTTS:
         return line
 
     def get_token(self):
+        access_key = configer.program_param("ACCESS_KEY")
+        access_key1 = configer.program_param("ACCESS_KEY_1")
         # 创建AcsClient实例
-        client = AcsClient('LTAI4G8pLKGSzgCT7RCfUMjW', "favuQgzb4zJGUHO2PBcLvTZ6vLTfnT", "cn-shanghai")
+        client = AcsClient(access_key, access_key1, "cn-shanghai")
         # 创建request，并设置参数
         request = CommonRequest()
         request.set_method('POST')
