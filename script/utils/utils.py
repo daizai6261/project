@@ -2,13 +2,15 @@ import os
 import math
 import random
 import shutil
+import requests
 from script.utils.utilsfile import utilsFile
 from script.utils.utilsword import utilsWord
 from script.base.configer import configer
 import cv2
 from pydub import AudioSegment
 import pypinyin
-
+from bs4 import BeautifulSoup
+import re
 
 class Utils():
     def cal_pos_max(self, max_pos_list, pos_list):
@@ -598,4 +600,46 @@ class Utils():
                     shutil.copyfile(source_path+item+"/"+sub_item, target_path + item + "/" + new_file_name)
                     os.remove(source_path+item+"/"+sub_item)
 
+    def genPhonetics(self, source_path, target_path):
+        file_data = ""
+        count = 0
+        with open(source_path, "r", encoding="utf-8") as f:
+            for line in f:
+                if (len(line) == 0 or line == "\n"):
+                    count = count + 1
+                    continue
+                if count < 2:
+                    if(count == 0):
+                        new_line = line[:-1] + "\t" + "美式音标\t" + "英式音标\n"
+                    else:
+                        new_line = line[:-1] + "\t" + "KkSymbol\t" + "IpaSymbol\n"
+                else:
+                    line_contents = line.split("\t")
+                    word = line_contents[1]
+                    #可能存在多个单词
+                    words = word.split(" ")
+                    US = ''
+                    UK = ''
+                    for w in words:
+                        res, n = re.subn(r"[^a-zA-Z’]+", "", w)
+                        [UK_temp, US_temp] = self.getPhonetic(res)
+                        UK += UK_temp + " "
+                        US += US_temp + " "
+                    new_line = line[: -1] + "\t" + US[:-1] + '\t' + UK[:-1] + '\n'
+                file_data += new_line
+                count = count + 1
+        file_data = file_data[: -1]
+        with open(target_path, "w", encoding="utf-8") as f:
+            f.write(file_data)
+        return True
+
+    def getPhonetic(self, word):
+        url = 'https://youdao.com/result?word=' + word +  '&lang=en'
+        data = requests.get(url).text
+        soup = BeautifulSoup(data, 'lxml')
+        data2 = soup.select('.phone_con > .per-phone > .phonetic')
+        res = []
+        for i in data2:
+            res.append(i.text.replace(" ", ""))
+        return res
 utils = Utils()

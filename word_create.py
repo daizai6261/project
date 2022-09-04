@@ -5,6 +5,7 @@ import time
 from script.tts.alytts import alyTTSApi
 from script.base.configer import configer
 import shutil
+import re
 
 
 def word_create():
@@ -34,7 +35,9 @@ def word_create():
         if not os.path.exists(osd_configs_path):
             # 如果目标路径不存在原文件夹的话就创建
             os.makedirs(osd_configs_path)
-        shutil.copy(file_path, osd_configs_path)
+        if(not utils.genPhonetics(file_path, osd_configs_path + file)):
+            return
+        # shutil.copy(file_path, osd_configs_path)
 
         if not cur_idx: cur_idx = 1
 
@@ -86,6 +89,16 @@ def word_valid():
                     msg += "【" + file + "】中的第" + str(num + 1) + "行的tab个数不对\n"
                     print("【" + file + "】中的第" + str(num + 1) + "行的tab个数不对")
                     continue
+                else:
+                    for w in words[1].split(" "):
+                        try:
+                            res, n = re.subn(r"[^a-zA-Z’]+", "", w)
+                            [UK_temp, US_temp] = utils.getPhonetic(res)
+                        except:
+                            msg += "检查【" +file + "】第" + str(num + 1) + "行单词拼写是否出错\n"
+                            print("检查【" +file + "】第" + str(num + 1) + "行单词拼写是否出错")
+                            is_valid = False
+                            break
         if msg != "":
             if not os.path.exists(error_word_output_path):
                 # 如果目标路径不存在原文件夹的话就创建
