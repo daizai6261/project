@@ -330,10 +330,10 @@ class Utils():
                     sound_name_head = sound_name.rsplit("_", 1)[0]
                     pinyin = utils.pinyin(chinese_content)
                     if position == 1:
-                        new_line = sound_name + "\tEngTxtContent" + "\t" + chinese_content + "\t" + "-10,-10,-10,-10" + "\t" + self.calc_y_x_w_y_num_V2(
+                        new_line = sound_name + '\t' + english_content + "\t" + chinese_content + "\t" + pinyin.rstrip() + "\t" + "-10,-10,-10,-10" + "\t" + self.calc_y_x_w_y_num_V2(
                             input=chinese_content, type=1)
                     elif position == 2:
-                        new_line = sound_name + "\tEngTxtContent" + "\t" + chinese_content + "\t" + "-20,-20,-20,-20" + "\t" + self.calc_y_x_w_y_num_V2(
+                        new_line = sound_name + '\t' + english_content + "\t" + chinese_content + "\t" + pinyin.rstrip() + "\t" + "-20,-20,-20,-20" + "\t" + self.calc_y_x_w_y_num_V2(
                             input=chinese_content, type=1)
                     # 情况为3、4、5的时候，position-3对应 0, 1, 2
                     else:
