@@ -635,11 +635,31 @@ class Utils():
 
     def getPhonetic(self, word):
         url = 'https://youdao.com/result?word=' + word +  '&lang=en'
-        data = requests.get(url).text
+        data = requests.get(url, proxies=random.choice(self.get_ips())).text
         soup = BeautifulSoup(data, 'lxml')
         data2 = soup.select('.phone_con > .per-phone > .phonetic')
         res = []
         for i in data2:
             res.append(i.text.replace(" ", ""))
         return res
+
+    def get_ips(self):
+        ips1 = []
+        url = configer.program_param("PC_URL")
+        response = requests.get(url)
+        ips = re.findall('\\d+\\.\\d+\\.\\d+\\.\\d*\\:\\d+', response.text, re.S)  ##正则表达式提取代理ip
+        for i in range(len(ips)):
+            ip = ips[i]
+            proxies = {
+                'http': "http://" + ip
+            }  ##可选，http或者https
+            try:
+                test_ip_response = requests.get('https://www.baidu.com/', proxies=proxies)
+            except Exception as e:
+                print("此代理异常")
+            # print(test_ip_response.status_code)
+            if test_ip_response.status_code == 200:  ##，如果能够访问安居客，状态码是200，那么就将代理加入到列表中
+                ips1.append(proxies)
+        return ips1
+
 utils = Utils()
