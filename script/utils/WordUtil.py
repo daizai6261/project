@@ -32,9 +32,9 @@ class WordUtil:
             f.write(result)
 
     # 单词去重
-    def wordClearRepeat(self):
+    def wordClearRepeat(self, fileInputPath, fileOutPath, fileOutName):
         # 1、获取文件夹下的所有文件
-        self.findFiles("./resource")
+        self.findFiles(fileInputPath)
         # 2、读取txt
         for file in self.resFileList:
             self.readFile(file)
@@ -49,7 +49,7 @@ class WordUtil:
             res += str(index) + "\t" + resultList[index] + "\n"
 
         # 3、输出txt
-        self.writeFile("./result", "result.txt", res)
+        self.writeFile(fileOutPath, fileOutName, res)
 
     def findFiles(self, path):
         # 首先遍历当前目录所有文件及文件夹
@@ -66,10 +66,11 @@ class WordUtil:
                 self.resFileList.append(cur_path)
 
 
-if __name__ == '__main__':
-    # 创建对象
-    wordUtil = WordUtil()
-    # 调用方法
-    wordUtil.wordClearRepeat()
-    wordUtil.findFiles("./resource")
+wordUtil = WordUtil()
 
+# if __name__ == '__main__':
+#     # 创建对象
+#     wordUtil = WordUtil()
+#     # 调用方法
+#     wordUtil.wordClearRepeat()
+#     wordUtil.findFiles("./resource")
