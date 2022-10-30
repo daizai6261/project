@@ -1,5 +1,5 @@
 import os
-
+import re
 
 class WordUtil:
     resFileList = []
@@ -63,7 +63,8 @@ class WordUtil:
                 self.findFiles(cur_path)
             else:
                 # 判断是否是特定文件名称
-                self.resFileList.append(cur_path)
+                if re.match(r"^(EnglishFollowup)_[0-9]*(\.txt)$", file, flags=0)  != None:
+                    self.resFileList.append(cur_path)
 
 
 wordUtil = WordUtil()
