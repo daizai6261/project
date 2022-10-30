@@ -2,6 +2,8 @@ import os
 import math
 import random
 import shutil
+import time
+
 import requests
 from script.utils.utilsfile import utilsFile
 from script.utils.utilsword import utilsWord
@@ -11,6 +13,7 @@ from pydub import AudioSegment
 import pypinyin
 from bs4 import BeautifulSoup
 import re
+import demjson
 
 class Utils():
     def cal_pos_max(self, max_pos_list, pos_list):
@@ -643,6 +646,80 @@ class Utils():
             res.append(i.text.replace(" ", ""))
         return res
 
+    def getPicture(self, phraseOrWords, number, path):
+        page = 0
+        header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36'}
+        url = 'https://image.baidu.com/search/acjson'
+        params = {
+            "tn": "resultjson_com",
+            "logid": "11555092689241190059",
+            "ipn": "rj",
+            "ct": "201326592",
+            "is": "",
+            "fp": "result",
+            "queryWord": phraseOrWords,
+            "cl": "2",
+            "lm": "-1",
+            "ie": "utf-8",
+            "oe": "utf-8",
+            "adpicid": "",
+            "st": "-1",
+            "z": "",
+            "ic": "0",
+            "hd": "",
+            "latest": "",
+            "copyright": "",
+            "word": phraseOrWords,
+            "s": "",
+            "se": "",
+            "tab": "",
+            "width": "",
+            "height": "",
+            "face": "0",
+            "istype": "2",
+            "qc": "",
+            "nc": "1",
+            "fr": "",
+            "expermode": "",
+            "force": "",
+            "pn": str(60 * page),
+            "rn": number,
+            "gsm": "1e",
+            "1617626956685": ""
+        }
+        # result = requests.get(url, headers=header, params=params).json()
+        result = requests.get(url, headers=header, params=params,proxies=random.choice(self.get_ips())).text
+        result = demjson.decode(result)
+        url_list = []
+        for data in result['data'][:-1]:
+            url_list.append(data['thumbURL'])
+        for i in range(len(url_list)):
+            self.getImg(url_list[i], 60 * page + i, path + phraseOrWords + "/")
+            number -= 1
+            if number == 0:
+                break
+        page += 1
+
+    def getImg(self, url, idx, path):
+        header = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36'}
+        img = requests.get(url, headers=header)
+        if not os.path.exists(path):
+            os.makedirs(path)
+        file = open(path + str(idx) + '.jpg', 'wb')
+        file.write(img.content)
+        file.close()
+
+    def getImgByWord(self, originPath, number, outputPath):
+        with open(originPath, 'r', encoding='utf-8') as f:
+            for line in f:
+                phraseOrWords = line.split('\t')[1].strip('\n')
+                index = line.split('\t')[0]
+                utils.getPicture(index, number, outputPath)
+                print(phraseOrWords + "抓取成功")
+                time.sleep(1)
+
+
     def get_ips(self):
         ips1 = []
         url = configer.program_param("PC_URL")
@@ -656,9 +733,8 @@ class Utils():
             try:
                 test_ip_response = requests.get('https://www.baidu.com/', proxies=proxies)
             except Exception as e:
-                print("此代理异常")
-            # print(test_ip_response.status_code)
-            if test_ip_response.status_code == 200:  ##，如果能够访问安居客，状态码是200，那么就将代理加入到列表中
+                print("代理异常")
+            if test_ip_response.status_code == 200:
                 ips1.append(proxies)
         return ips1
 
