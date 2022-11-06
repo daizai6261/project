@@ -35,14 +35,14 @@ def word_create():
         if not os.path.exists(osd_configs_path):
             # 如果目标路径不存在原文件夹的话就创建
             os.makedirs(osd_configs_path)
-        if(not utils.genPhonetics(file_path, osd_configs_path + file)):
+        if not utils.genPhonetics(file_path, osd_configs_path + file):
             return
         # shutil.copy(file_path, osd_configs_path)
 
         if not cur_idx: cur_idx = 1
 
         for num, line in enumerate(file_content):
-            if (len(line) == 0 or line == "\n"):
+            if len(line) == 0 or line == "\n":
                 continue
             if (num > 1) & (num > int(cur_idx)):
                 # time.sleep(1)
@@ -80,11 +80,11 @@ def word_valid():
         if not cur_idx: cur_idx = 1
         msg = ""
         for num, line in enumerate(file_content):
-            if (len(line) == 0 or line == "\n"):
+            if len(line) == 0 or line == "\n":
                 continue
             if (num > 1) & (num > int(cur_idx)):
                 words = line.split("\t")
-                if (len(words) != 3):
+                if len(words) != 3:
                     is_valid = False
                     msg += "【" + file + "】中的第" + str(num + 1) + "行的tab个数不对\n"
                     print("【" + file + "】中的第" + str(num + 1) + "行的tab个数不对")
@@ -107,8 +107,9 @@ def word_valid():
             with open(result_file, "w", encoding="utf-8") as f:
                 f.write(msg)
     return is_valid
+
 if __name__ == '__main__':
     # 单词音频生成
-    if(word_valid()):
+    if word_valid():
         word_create()
 
