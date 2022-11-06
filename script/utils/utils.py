@@ -710,14 +710,14 @@ class Utils():
         file.write(img.content)
         file.close()
 
-    def getImgByWord(self, originPath, number, outputPath):
+    def getImgByWord(self, originPath, number, keyWord, outputPath):
         with open(originPath, 'r', encoding='utf-8') as f:
             for line in f:
                 phraseOrWords = line.split('\t')[1].strip('\n')
                 index = line.split('\t')[0]
-                utils.getPicture(index, phraseOrWords + '单词图片', number, outputPath)
+                utils.getPicture(index, phraseOrWords + keyWord, number, outputPath)
                 print(phraseOrWords + "抓取成功")
-                time.sleep(1)
+                time.sleep(2)
 
 
     def get_ips(self):
