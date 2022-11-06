@@ -14,6 +14,7 @@ import pypinyin
 from bs4 import BeautifulSoup
 import re
 import demjson
+from selenium import webdriver
 
 class Utils():
     def cal_pos_max(self, max_pos_list, pos_list):
@@ -737,5 +738,64 @@ class Utils():
             if test_ip_response.status_code == 200:
                 ips1.append(proxies)
         return ips1
+
+    def init_browser(self, url, chrome_driver):
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--disable-infobars")
+        browser = webdriver.Chrome(executable_path=chrome_driver, chrome_options=chrome_options)
+        # 浏览器访问指定的url
+        browser.get(url)
+        browser.maximize_window()
+        return browser
+
+    def get_google_pic(self, browser, num, sleep_time, output_path, idx):
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
+        # 用于记录图片数量
+        count = 0
+        # 浏览器滚动条位置
+        pos = 0
+        while True:
+            try:
+                scroll_pos = 'let pos = document.documentElement.scrollTop=' + str(pos)
+                pos += 300
+                browser.execute_script(scroll_pos)
+                time.sleep(0.5)
+                img_elements = browser.find_elements_by_xpath('//a[@class="wXeWr islib nfEiy"]')
+                try:
+                    for img_element in img_elements:
+                        img_element.click()
+                        time.sleep(sleep_time)
+                        try:
+                            new_img_elements = browser.find_elements_by_xpath('//img[@class="n3VNCb KAlRDb"]')
+                            if new_img_elements:
+                                for new_img_element in new_img_elements:
+                                    src = new_img_element.get_attribute('src')
+                                    if src.startswith('http') and not src.startswith('https://encrypted-tbn0.gstatic.com'):
+                                        print('Found' + str(count) + 'st image url')
+                                        self.getImg(src, count, output_path + "/" + idx + "/")
+                                        count += 1
+                                        if count >= num:
+                                            return
+                        except:
+                            print("获取图片失败")
+                    browser.back()
+                    time.sleep(0.5)
+                except:
+                    print('获取页面失败')
+            except:
+                print("不能向下滑了")
+
+    def run_get_google_pic(self, chrome_driver, origin_path, keyword_addition, num, sleep_time, output_path):
+        with open(origin_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                phrase_or_words = line.split('\t')[1].strip('\n')
+                index = line.split('\t')[0]
+                url = 'https://www.google.com.hk/search?q=' + phrase_or_words + ' ' + keyword_addition + '&source=lnms&tbm=isch'
+                browser = self.init_browser(url, chrome_driver)
+                self.get_google_pic(browser, num, sleep_time, output_path, index)
+                browser.close()
+
+
 
 utils = Utils()
