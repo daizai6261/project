@@ -797,6 +797,18 @@ class Utils():
                 self.get_google_pic(browser, num, sleep_time, output_path, index)
                 browser.close()
 
+    def get_word_code(self, file_path):
+        word_code_dict = {}
+        with open(file_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                if line == '\n' or len(line) == 0:
+                    continue
+                line_contents = line.split("\t")
+                code = line_contents[0]
+                word = line_contents[1]
+                word_code_dict[word] = code
+        f.close()
+        return word_code_dict
 
 
 utils = Utils()
