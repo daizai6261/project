@@ -749,7 +749,7 @@ class Utils():
         browser.maximize_window()
         return browser
 
-    def get_google_pic(self, browser, num, sleep_time, output_path, idx):
+    def get_google_pic(self, browser, num, sleep_time, output_path, idx, chineseName):
         if not os.path.exists(output_path):
             os.makedirs(output_path)
         # 用于记录图片数量
@@ -774,7 +774,7 @@ class Utils():
                                     src = new_img_element.get_attribute('src')
                                     if src.startswith('http') and not src.startswith('https://encrypted-tbn0.gstatic.com'):
                                         print('Found' + str(count) + 'st image url')
-                                        self.getImg(src, count, output_path + "/" + idx + "/")
+                                        self.getImg(src, count, output_path + "/" + idx + "_" + chineseName + "/")
                                         count += 1
                                         if count >= num:
                                             return
@@ -792,9 +792,10 @@ class Utils():
             for line in f:
                 phrase_or_words = line.split('\t')[1].strip('\n')
                 index = line.split('\t')[0]
+                chineseName = line.split('\t')[2].strip('\n')
                 url = 'https://www.google.com.hk/search?q=' + phrase_or_words + ' ' + keyword_addition + '&source=lnms&tbm=isch'
                 browser = self.init_browser(url, chrome_driver)
-                self.get_google_pic(browser, num, sleep_time, output_path, index)
+                self.get_google_pic(browser, num, sleep_time, output_path, index, chineseName)
                 browser.close()
 
 
