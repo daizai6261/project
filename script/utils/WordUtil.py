@@ -4,6 +4,7 @@ import re
 class WordUtil:
     resFileList = []
     resList = []
+    resChineseList = []
 
     # 根据文件位置读取文件，输出每行内容
     def readFile(self, filePath):
@@ -21,6 +22,7 @@ class WordUtil:
                         continue
                     if words[1] not in self.resList:
                         self.resList.append(words[1])
+                        self.resChineseList.append(words[2])
 
     # 将结果（result）输出到指定文件（filePath）
     def writeFile(self, filePath, fileName, result):
@@ -38,15 +40,9 @@ class WordUtil:
         # 2、读取txt
         for file in self.resFileList:
             self.readFile(file)
-        # todo 2、去重
-        resultList = []
         res = ""
-        for item in self.resList:
-            if item not in resultList:
-                resultList.append(item)
-
-        for index in range(len(resultList)):
-            res += str(index) + "\t" + resultList[index] + "\n"
+        for index in range(len(self.resList)):
+            res += str(index) + "\t" + self.resList[index] + "\t" + self.resChineseList[index] + "\n"
 
         # 3、输出txt
         self.writeFile(fileOutPath, fileOutName, res)
