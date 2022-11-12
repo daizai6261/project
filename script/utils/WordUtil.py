@@ -42,7 +42,9 @@ class WordUtil:
             self.readFile(file)
         res = ""
         for index in range(len(self.resList)):
-            res += str(index) + "\t" + self.resList[index] + "\t" + self.resChineseList[index] + "\n"
+            if '\n' not in self.resChineseList[index]:
+                self.resChineseList[index] = self.resChineseList[index] + "\n"
+            res += str(index) + "\t" + self.resList[index] + "\t" + self.resChineseList[index]
 
         # 3、输出txt
         self.writeFile(fileOutPath, fileOutName, res)
