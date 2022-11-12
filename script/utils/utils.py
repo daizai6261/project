@@ -647,7 +647,7 @@ class Utils():
             res.append(i.text.replace(" ", ""))
         return res
 
-    def getPicture(self, index, phraseOrWords, number, path):
+    def getPicture(self, index, chineseName, phraseOrWords, number, path):
         page = 0
         header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36'}
         url = 'https://image.baidu.com/search/acjson'
@@ -695,7 +695,7 @@ class Utils():
         for data in result['data'][:-1]:
             url_list.append(data['thumbURL'])
         for i in range(len(url_list)):
-            self.getImg(url_list[i], 60 * page + i, path + index + "/")
+            self.getImg(url_list[i], 60 * page + i, path + index + "_" + chineseName + "/")
             number -= 1
             if number == 0:
                 break
@@ -716,7 +716,8 @@ class Utils():
             for line in f:
                 phraseOrWords = line.split('\t')[1].strip('\n')
                 index = line.split('\t')[0]
-                utils.getPicture(index, phraseOrWords + keyWord, number, outputPath)
+                chineseName = line.split('\t')[2].strip('\n')
+                utils.getPicture(index, chineseName, phraseOrWords + keyWord, number, outputPath)
                 print(phraseOrWords + "抓取成功")
                 time.sleep(2)
 
