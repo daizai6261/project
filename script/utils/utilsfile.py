@@ -10,6 +10,7 @@ class UtilsFile():
 
     def set_book_idx(self, book_index, book_idx):
         self.book_idx = book_idx
+        self.book_name = str(self.book[book_index]["name"])
         self.book_series = str(int(self.book[book_index]["series"]))
         self.str_book_idx = str(book_idx)
         self.speaker = configer.program_param("CURRENT_SPEAKER").lower()
@@ -55,14 +56,17 @@ class UtilsFile():
 
         self.paths["osd_texture_path"] = self.paths["dest_path"] + "osd_texture/"
         self.paths["osd_sound_path"] = self.paths["dest_path"] + "osd_sound/"
-        # self.paths["osd_config_path"] = self.paths["dest_path"] + "osd_configs/"
+        self.paths["osd_config_path_1"] = self.paths["dest_path"] + "osd_configs/"
         self.paths["osd_config_path"] = self.paths["res_path"] + "osd_configs/"
         self.paths["osd_book_unit_file"] = self.paths["osd_config_path"]  + "BookUnit_" + self.str_book_idx + ".txt"
+        self.paths["osd_book_unit_file_1"] = self.paths["osd_config_path_1"]  + "BookUnit_" + self.str_book_idx + ".txt"
         self.paths["osd_en_audio_file"] = self.paths["osd_config_path"]  + "EnglishAudio_" + self.str_book_idx + ".txt"
+        self.paths["osd_en_audio_file_1"] = self.paths["osd_config_path_1"]  + "EnglishAudio_" + self.str_book_idx + ".txt"
         self.paths["osd_en_word_file"] = self.paths["osd_config_path"] +  "EnglishFollowup_" + self.str_book_idx + ".txt"
         self.paths["osd_chnword_file"] = self.paths["osd_config_path"] +  "CHNWord_" + self.str_book_idx + ".txt"
         self.paths["osd_cnsound_path"] = self.paths["dest_path"] + "osd_chnword/"
 
+        self.paths["ddt_book_path"] = self.paths["work_path"] + "res/org/" + self.book_name + "/"
 
 
 

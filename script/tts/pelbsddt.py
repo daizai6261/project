@@ -17,11 +17,11 @@ class PelbsDDT:
         self.page_dir_list = []
 
     def trans_ddt_book(self):
-        self.create_book_pic()
+        # self.create_book_pic()
         self.create_book_res()
         self.create_audio_txt()
 
-        self.create_word_hz_res()
+        # self.create_word_hz_res()
 
     def create_book_pic(self):
         ddt_cover_file = utilsFile.get("ddt_cover_file")
@@ -32,10 +32,10 @@ class PelbsDDT:
         book_unit_file = utilsFile.get("book_unit_file")
         dest_path = utilsFile.get("dest_path")
         osd_texture_path = utilsFile.get("osd_texture_path")
-        osd_book_unit_file = utilsFile.get("osd_book_unit_file")
+        osd_book_unit_file = utilsFile.get("osd_book_unit_file_1")
 
         osd_sound_path = utilsFile.get("osd_sound_path")
-        osd_config_path = utilsFile.get("osd_config_path")
+        osd_config_path = utilsFile.get("osd_config_path_1")
 
         utils.delete_folder(dest_path)
         utils.recreate_folder(dest_path)
@@ -101,7 +101,7 @@ class PelbsDDT:
         self.reset_txt()
 
         book_unit_file = utilsFile.get("book_unit_file")
-        osd_en_audio_file = utilsFile.get("osd_en_audio_file")
+        osd_en_audio_file = utilsFile.get("osd_en_audio_file_1")
         ddt_book_path = utilsFile.get("ddt_book_path")
 
         faudio = open(osd_en_audio_file, "a+", encoding="utf-8")
@@ -139,7 +139,7 @@ class PelbsDDT:
             english = "EngTxtContent"
             chinese = linecache.getline(ddt_char_file, num + 1).rstrip("\n")
             pos = self.trans_ddt_coordinate(line, ddt_pic_file)
-            book_dir = utilsFile.get_book_dir()
+            # book_dir = utilsFile.get_book_dir()
             # if book_dir == "HB":        #横屏
             # pos = self.trans_ddt_coordinate_ls(line, ddt_pic_file)
             ln = "1"
