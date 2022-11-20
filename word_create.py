@@ -185,7 +185,7 @@ def word_config_create():
             if not os.path.exists(error_word_output_path):
                 # 如果目标路径不存在原文件夹的话就创建
                 os.makedirs(error_word_output_path)
-            result_file = error_word_output_path + "wordListFiles.txt"
+            result_file = error_word_output_path + "book" + book_num + ".txt"
             with open(result_file, "w", encoding="utf-8") as f:
                 f.write(msg)
         if flag == 0:
@@ -201,7 +201,7 @@ def word_config_create():
             if not os.path.exists(error_word_output_path):
                 # 如果目标路径不存在原文件夹的话就创建
                 os.makedirs(error_word_output_path)
-            result_file = error_word_output_path + "book" + book_num + ".txt"
+            result_file = error_word_output_path + "wordListFiles.txt"
             with open(result_file, "w", encoding="utf-8") as f:
                 f.write(wordslist_file)
 
