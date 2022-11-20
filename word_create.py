@@ -136,6 +136,9 @@ def word_config_create():
         file_data = ""
         count = 0
         msg = ""
+        # 用于标识是否是wordList文件
+        flag = 0
+        wordslist_file = ""
         for num, line in enumerate(file_content):
             if len(line) == 0 or line == "\n":
                 count = count + 1
@@ -147,6 +150,11 @@ def word_config_create():
                     new_line = line[:-1] + "\t" + "KkSymbol\t" + "IpaSymbol\t" + "PicCode\n"
             else:
                 words = line.split("\t")
+                if len(words) == 2 and "wordslist_" in words[1]:
+                    flag = 1
+                    wordslist_file += file + "\n"
+                    print("【" + file + "】:是wordlist文件，不进行操作")
+                    break
                 if len(words) != 3:
                     msg += "【" + file + "】中的第" + str(num + 1) + "行的tab个数不对\n"
                     print("【" + file + "】中的第" + str(num + 1) + "行的tab个数不对")
@@ -173,20 +181,29 @@ def word_config_create():
                     new_line = line[: -1] + "\t" + US[:-1] + '\t' + UK[:-1] + '\t' + pic_code + '\n'
             file_data += new_line
             count += 1
-        if msg != "":
+        if msg != "" and flag == 0:
+            if not os.path.exists(error_word_output_path):
+                # 如果目标路径不存在原文件夹的话就创建
+                os.makedirs(error_word_output_path)
+            result_file = error_word_output_path + "wordListFiles.txt"
+            with open(result_file, "w", encoding="utf-8") as f:
+                f.write(msg)
+        if flag == 0:
+            file_data = file_data[: -1]
+
+            with open(target_path + "s_" + book_file_name, "w", encoding="utf-8") as f:
+                f.write(file_data)
+            file_content.close()
+            os.remove(file)
+            shutil.copyfile(target_path + "s_" + book_file_name, file)
+            os.remove(target_path + "s_" + book_file_name)
+        elif flag == 1:
             if not os.path.exists(error_word_output_path):
                 # 如果目标路径不存在原文件夹的话就创建
                 os.makedirs(error_word_output_path)
             result_file = error_word_output_path + "book" + book_num + ".txt"
             with open(result_file, "w", encoding="utf-8") as f:
-                f.write(msg)
-        file_data = file_data[: -1]
-        with open(target_path + "s_" + book_file_name, "w", encoding="utf-8") as f:
-            f.write(file_data)
-        file_content.close()
-        os.remove(file)
-        shutil.copyfile(target_path + "s_" + book_file_name, file)
-        os.remove(target_path + "s_" + book_file_name)
+                f.write(wordslist_file)
 
 
 if __name__ == '__main__':
