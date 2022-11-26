@@ -160,6 +160,7 @@ def word_config_create():
                     print("【" + file + "】中的第" + str(num + 1) + "行的tab个数不对")
                     line_contents = line.split("\t")
                     word = line_contents[1]
+                    pic_code = "NoneCode"
                     if word_code_dict.get(word):
                         pic_code = word_code_dict.get(word)
                     new_line = line[: -1] + "\t" + pic_code + '\n'
