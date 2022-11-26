@@ -17,6 +17,9 @@ import demjson
 from selenium import webdriver
 
 class Utils():
+    # 用于存储非法的文件夹路径
+    in_valid_files = []
+
     def cal_pos_max(self, max_pos_list, pos_list):
         lista = max_pos_list.split(",")
         listb = pos_list.split(",")
@@ -810,6 +813,26 @@ class Utils():
                 word_code_dict[word] = code
         f.close()
         return word_code_dict
+
+    def findFilesWithoutNPic(self, path, n):
+        # 首先遍历当前目录所有文件及文件夹
+        file_list = os.listdir(path)
+        # 计算图片个数
+        count = 0
+        # 循环判断每个元素是否是文件夹还是文件，是文件夹的话，递归
+        for file in file_list:
+            # 利用os.path.join()方法取得路径全名，并存入cur_path变量，否则每次只能遍历一层目录
+            cur_path = os.path.join(path, file)
+            # 判断是否是文件夹
+            if os.path.isdir(cur_path):
+                self.findFilesWithoutNPic(cur_path)
+            else:
+                # 判断是否是特定文件名称
+                if re.match(r"^[0-9]*(\.png|\.jpg|\.jpeg)$", file, flags=0) != None:
+                    count += 1
+        if count != n - 1:
+            self.in_valid_files.append(path)
+
 
 
 utils = Utils()
