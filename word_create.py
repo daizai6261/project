@@ -110,7 +110,7 @@ def word_valid():
 
 def word_config_create():
     PROJECT_PATH = configer.run_param("PROJECT_PATH")
-    wordUtil.findFiles("D:\Workship\Pelbs\Books\教材\初中英语")
+    wordUtil.findFiles("D:\Workship\Pelbs\Books\教材\小学英语")
     files = wordUtil.resFileList
     # 单词出错路径
     error_output_path = PROJECT_PATH + "error/"
@@ -118,7 +118,7 @@ def word_config_create():
 
     target_path = PROJECT_PATH + "dest/word_audio_output_path/" + "book" + "/osd_configs/"
 
-    word_code_dict = utils.get_word_code(PROJECT_PATH + "dest/pic_word/result-初中英语.txt")
+    word_code_dict = utils.get_word_code(PROJECT_PATH + "dest/pic_word/result-小学英语.txt")
 
     if not os.path.exists(target_path):
         # 如果目标路径不存在原文件夹的话就创建
@@ -126,6 +126,7 @@ def word_config_create():
 
     if os.path.exists(error_word_output_path):
         utils.del_file(error_word_output_path)
+    wordslist_file = ""
     for file in files:
         file_path = file
         file_content = open(file_path, 'r', encoding="utf-8")
@@ -138,7 +139,6 @@ def word_config_create():
         msg = ""
         # 用于标识是否是wordList文件
         flag = 0
-        wordslist_file = ""
         for num, line in enumerate(file_content):
             if len(line) == 0 or line == "\n":
                 count = count + 1
@@ -158,7 +158,11 @@ def word_config_create():
                 if len(words) != 3:
                     msg += "【" + file + "】中的第" + str(num + 1) + "行的tab个数不对\n"
                     print("【" + file + "】中的第" + str(num + 1) + "行的tab个数不对")
-                    continue
+                    line_contents = line.split("\t")
+                    word = line_contents[1]
+                    if word_code_dict.get(word):
+                        pic_code = word_code_dict.get(word)
+                    new_line = line[: -1] + "\t" + pic_code + '\n'
                 else:
                     line_contents = line.split("\t")
                     word = line_contents[1]
