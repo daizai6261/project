@@ -828,12 +828,12 @@ class Utils():
             # 判断是否是文件夹
             if os.path.isdir(cur_path):
                 flag = 1
-                self.findFilesWithoutNPic(cur_path)
+                self.findFilesWithoutNPic(cur_path, n)
             else:
                 # 判断是否是特定文件名称
                 if re.match(r"^[0-9]*(\.png|\.jpg|\.jpeg)$", file, flags=0) != None:
                     count += 1
-        if flag == 0 and count != n - 1:
+        if flag == 0 and count != n:
             self.in_valid_files.append(path)
 
 
