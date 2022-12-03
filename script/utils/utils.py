@@ -15,6 +15,7 @@ from bs4 import BeautifulSoup
 import re
 import demjson
 from selenium import webdriver
+import fitz
 
 class Utils():
     # 用于存储非法的文件夹路径
@@ -836,6 +837,16 @@ class Utils():
         if flag == 0 and count != n:
             self.in_valid_files.append(path)
 
-
+    def pdf_to_image(self, pdf_path, img_path, x, y, rotation_angle):
+        pdf = fitz.open(pdf_path)
+        # 逐页读取PDF
+        for pg in range(0, pdf.pageCount):
+            page = pdf[pg]
+            # 设置缩放和旋转系数
+            trans = fitz.Matrix(x, y).preRotate(rotation_angle)
+            pm = page.getPixmap(matrix=trans, alpha=False)
+            # 开始写图像
+            pm.writePNG(img_path + str(pg) + ".png")
+        pdf.close()
 
 utils = Utils()
