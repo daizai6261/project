@@ -19,6 +19,7 @@ class UtilsFile():
         self.paths["work_path"]  = configer.run_param("PROJECT_PATH")
         self.paths["temp_path"]  = self.paths["work_path"] + "temp/"
         self.paths["temp_texture_path"]  = self.paths["temp_path"] + "texture/"
+        self.paths["temp_xls_file"] = self.paths["temp_path"] + "xlsFile.xlsx"
         self.paths["temp_sound_path"]  = self.paths["temp_path"] + "sound/"
         self.paths["tts_idx_path"]  = self.paths["work_path"] + "data/tts_idx.txt"          #顺序控制文件
 
@@ -31,6 +32,7 @@ class UtilsFile():
         self.paths["res_path"] = self.paths["work_path"] + "res/org/series"+ self.book_series +"/book" + self.str_book_idx + "/"
         self.paths["res_sound_path"] = self.paths["res_path"] + "sound/"
         self.paths["res_osd_texture_path"] = self.paths["res_path"] + "osd_texture/"
+        self.paths["res_texture_path"] = self.paths["work_path"] + "res/org/texture/"
         self.paths["dest_path"]  = self.paths["work_path"] + "dest/series"+ self.book_series +"/book" + self.str_book_idx + "/"
         # self.paths["dest_texture_path"] = self.paths["dest_path"] + self.speaker + "_texture/"
         self.paths["dest_texture_path"] = self.paths["dest_path"] + "osd_texture/"

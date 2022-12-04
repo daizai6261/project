@@ -212,4 +212,6 @@ def word_config_create():
 
 
 if __name__ == '__main__':
-    word_config_create()
+    # word_config_create()
+    # if word_valid():
+    word_create()

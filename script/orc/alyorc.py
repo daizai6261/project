@@ -7,7 +7,7 @@ from aliyunsdkcore.client import AcsClient
 from aliyunsdkcore.acs_exception.exceptions import ClientException
 from aliyunsdkcore.acs_exception.exceptions import ServerException
 from aliyunsdkocr.request.v20191230.RecognizeCharacterRequest import RecognizeCharacterRequest
-
+from script.base.configer import configer
 # 本地图片
 
 
@@ -15,11 +15,11 @@ from aliyunsdkocr.request.v20191230.RecognizeCharacterRequest import RecognizeCh
 class AlyORC:
     def __init__(self):
  
-        self.AccessKeyId = 'LTAI4G8pLKGSzgCT7RCfUMjW'  
-        self.AccessKeySecret = 'favuQgzb4zJGUHO2PBcLvTZ6vLTfnT'
+        self.AccessKeyId = configer.program_param("ACCESS_KEY")
+        self.AccessKeySecret = configer.program_param("ACCESS_KEY_1")
 
     def get_oss_url(self, path):
-        file_utils = FileUtils("LTAI4G8pLKGSzgCT7RCfUMjW","favuQgzb4zJGUHO2PBcLvTZ6vLTfnT")
+        file_utils = FileUtils(configer.program_param("ACCESS_KEY"), configer.program_param("ACCESS_KEY_1"))
         oss_url = file_utils.get_oss_url(path, "jpg", True)
         return oss_url
 
