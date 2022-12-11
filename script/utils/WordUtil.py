@@ -6,6 +6,8 @@ class WordUtil:
     resList = []
     resChineseList = []
 
+    resMapList = []
+
     # 根据文件位置读取文件，输出每行内容
     def readFile(self, filePath):
         # todo:将每行的第英文内容存储在这个list中，并且返回
@@ -34,24 +36,42 @@ class WordUtil:
             f.write(result)
 
     # 单词去重
-    def wordClearRepeat(self, fileInputPath, fileOutPath, fileOutName):
+    def wordClearRepeat(self, fileInputPath, fileOutPath, fileOutName, mapFile):
         # 1、获取文件夹下的所有文件
         self.findFiles(fileInputPath)
         # 2、读取txt
         for file in self.resFileList:
             self.readFile(file)
         res = ""
+        pattern = re.compile(r'\d+')
+        bookNum = pattern.findall(file)[-1]
+        code = ""
+        self.book_num_map(mapFile)
+
+        for bookObj in self.resMapList:
+            if bookNum == bookObj["bookNum"]:
+                code = bookObj["code"]
+
         for index in range(len(self.resList)):
             if '\n' not in self.resChineseList[index]:
                 self.resChineseList[index] = self.resChineseList[index] + "\n"
-            res += str(index) + "\t" + self.resList[index] + "\t" + self.resChineseList[index]
+            res += str(index) + "\t" + code + "\t" + self.resList[index] + "\t" + self.resChineseList[index]
 
         # 3、输出txt
         self.writeFile(fileOutPath, fileOutName, res)
 
 
-    def book_num_map(self, path, ):
-
+    def book_num_map(self, path):
+        pattern = re.compile(r'\d+')
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                if len(line) <= 0 or "Book" not in line:
+                    continue
+                numbers = pattern.findall(line)
+                self.resMapList.append({
+                    "bookNum": numbers[0],
+                    "code": numbers[2] + numbers[3]
+                })
 
     def findFiles(self, path):
         # 首先遍历当前目录所有文件及文件夹

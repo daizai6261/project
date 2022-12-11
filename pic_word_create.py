@@ -4,7 +4,7 @@ from script.base.configer import configer
 if __name__ == '__main__':
     PROJECT_PATH = configer.run_param("PROJECT_PATH")
     # 调用方法
-    # wordUtil.wordClearRepeat(PROJECT_PATH + "/res/org/resource", PROJECT_PATH + "dest/pic_word/", "result.txt")
+    wordUtil.wordClearRepeat(PROJECT_PATH + "/res/org/resource", PROJECT_PATH + "dest/pic_word/", "result.txt", "")
     # wordUtil.wordClearRepeat("D:\Workship\Pelbs\Books\教材\小学英语", PROJECT_PATH + "dest/pic_word/", "result.txt")
     # 读取result.txt中去重后的单词
     # utils.getImgByWord(PROJECT_PATH + "dest/pic_word/result-初中英语.txt", 5, " 卡通图像",   PROJECT_PATH + "dest/pic_word/初中英语-百度/")
@@ -17,4 +17,4 @@ if __name__ == '__main__':
     # print(utils.in_valid_files)
 
     # pdf转图片
-    utils.pdf_to_image("C:\\Users\\40198\\Desktop\\新版PEP小学英语三年级上册电子课本.pdf", "C:\\Users\\40198\\Desktop\\pics-2\\", 5, 5, 0)
+    # utils.pdf_to_image("C:\\Users\\40198\\Desktop\\新版PEP小学英语三年级上册电子课本.pdf", "C:\\Users\\40198\\Desktop\\pics-2\\", 5, 5, 0)
