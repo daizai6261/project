@@ -3,21 +3,24 @@ from enum import Enum, unique
 
 @unique
 class GradeEnum(Enum):
-    FIRST_GRADE_UP = 11  # 一年级上册
-    FIRST_GRADE_DOWN = 12  # 一年级下册
-    SECOND_GRADE_UP = 21  # 二年级上册
-    SECOND_GRADE_DOWN = 22  # 二年级下册
-    THIRD_GRADE_UP = 31  # 三年级上册
-    THIRD_GRADE_DOWN = 32  # 三年级下册
-    FOUR_GRADE_UP = 41  # 四年级上册
-    FOUR_GRADE_DOWN = 42  # 四年级下册
-    FIVE_GRADE_UP = 51  # 五年级上册
-    FIVE_GRADE_DOWN = 52  # 五年级下册
-    SIX_GRADE_UP = 61  # 六年级上册
-    SIX_GRADE_DOWN = 62  # 六年级下册
-    SEVEN_GRADE_UP = 71  # 七年级上册
-    SEVEN_GRADE_DOWN = 72  # 七年级下册
-    EIGHT_GRADE_UP = 81  # 八年级上册
-    EIGHT_GRADE_DOWN = 82  # 八年级下册
-    NINE_GRADE_UP = 91  # 九年级上册
-    NINE_GRADE_DOWN = 92  # 九年级下册
+    FIRST_GRADE_UP = ["一年级上册", 11]
+    FIRST_GRADE_DOWN = ["一年级下册", 12]
+    SECOND_GRADE_UP = ["二年级上册", 21]
+    SECOND_GRADE_DOWN = ["二年级下册", 22]
+    THIRD_GRADE_UP = ["三年级上册", 31]
+    THIRD_GRADE_DOWN = ["三年级下册", 32]
+    FOUR_GRADE_UP = ["四年级上册", 41]
+    FOUR_GRADE_DOWN = ["四年级下册", 42]
+    FIVE_GRADE_UP = ["五年级上册", 51]
+    FIVE_GRADE_DOWN = ["五年级下册", 52]
+    SIX_GRADE_UP = ["六年级上册", 61]
+    SIX_GRADE_DOWN = ["六年级下册", 62]
+    SEVEN_GRADE_UP = ["七年级上册", 71]
+    SEVEN_GRADE_DOWN = ["七年级下册", 72]
+    EIGHT_GRADE_UP = ["八年级上册", 81]
+    EIGHT_GRADE_DOWN = ["八年级下册", 82]
+    NINE_GRADE_UP = ["九年级上册", 91]
+    NINE_GRADE_DOWN = ["九年级下册", 92]
+
+
+
