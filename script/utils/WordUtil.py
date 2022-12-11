@@ -49,6 +49,10 @@ class WordUtil:
         # 3、输出txt
         self.writeFile(fileOutPath, fileOutName, res)
 
+
+    def book_num_map(self, path, ):
+
+
     def findFiles(self, path):
         # 首先遍历当前目录所有文件及文件夹
         file_list = os.listdir(path)
