@@ -5,11 +5,12 @@ class WordUtil:
     resFileList = []
     resList = []
     resChineseList = []
+    resCodeList = []
 
     resMapList = []
 
     # 根据文件位置读取文件，输出每行内容
-    def readFile(self, filePath):
+    def readFile(self, filePath, code):
         # todo:将每行的第英文内容存储在这个list中，并且返回
         with open(filePath, "r", encoding="utf-8") as f:
             count = 0
@@ -25,6 +26,7 @@ class WordUtil:
                     if words[1] not in self.resList:
                         self.resList.append(words[1])
                         self.resChineseList.append(words[2])
+                        self.resCodeList.append(code)
 
     # 将结果（result）输出到指定文件（filePath）
     def writeFile(self, filePath, fileName, result):
@@ -39,23 +41,22 @@ class WordUtil:
     def wordClearRepeat(self, fileInputPath, fileOutPath, fileOutName, mapFile):
         # 1、获取文件夹下的所有文件
         self.findFiles(fileInputPath)
+        pattern = re.compile(r'\d+')
+        self.book_num_map(mapFile)
         # 2、读取txt
         for file in self.resFileList:
-            self.readFile(file)
+            bookNum = pattern.findall(file)[-1]
+            code = ""
+            for bookObj in self.resMapList:
+                if bookNum == bookObj["bookNum"]:
+                    code = bookObj["code"]
+            self.readFile(file, code)
         res = ""
-        pattern = re.compile(r'\d+')
-        bookNum = pattern.findall(file)[-1]
-        code = ""
-        self.book_num_map(mapFile)
-
-        for bookObj in self.resMapList:
-            if bookNum == bookObj["bookNum"]:
-                code = bookObj["code"]
 
         for index in range(len(self.resList)):
             if '\n' not in self.resChineseList[index]:
                 self.resChineseList[index] = self.resChineseList[index] + "\n"
-            res += str(index) + "\t" + code + "\t" + self.resList[index] + "\t" + self.resChineseList[index]
+            res += str(index) + "\t" + self.resCodeList[index] + "\t" + self.resList[index] + "\t" + self.resChineseList[index]
 
         # 3、输出txt
         self.writeFile(fileOutPath, fileOutName, res)
