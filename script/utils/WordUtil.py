@@ -2,9 +2,14 @@ import os
 import re
 
 class WordUtil:
+    # 用于存储文件名字（^(EnglishFollowup)_[0-9]*(\.txt)$）的数组
     resFileList = []
+    # 用于存储去重后的单词
     resList = []
     resChineseList = []
+
+    # 用于存储映射关系
+    resMapList = []
 
     # 根据文件位置读取文件，输出每行内容
     def readFile(self, filePath):
@@ -37,21 +42,28 @@ class WordUtil:
     def wordClearRepeat(self, fileInputPath, fileOutPath, fileOutName):
         # 1、获取文件夹下的所有文件
         self.findFiles(fileInputPath)
+        # 调用book_num_map，先读取第四张图里面的，按行读取，存一个对应关系[{bookNum:276,code:11},{...},{}]
+
+        bookNo = ''
+        bookGrade = ''
         # 2、读取txt
         for file in self.resFileList:
+            bookNo = file.split('.')[0]
             self.readFile(file)
         res = ""
         for index in range(len(self.resList)):
             if '\n' not in self.resChineseList[index]:
                 self.resChineseList[index] = self.resChineseList[index] + "\n"
-            res += str(index) + "\t" + self.resList[index] + "\t" + self.resChineseList[index]
+            res += str(index) + "\t" + bookGrade + '\t' + self.resList[index] + "\t" +self.resChineseList[index]
 
         # 3、输出txt
         self.writeFile(fileOutPath, fileOutName, res)
 
 
-    def book_num_map(self, path, ):
-
+    def book_num_map(self, path):
+        # TODO :先读取第四张图里面的，按行读取，存一个对应关系[{bookNum:276,code:11},{...},{}]
+        self.resMapList = []
+        pass
 
     def findFiles(self, path):
         # 首先遍历当前目录所有文件及文件夹
