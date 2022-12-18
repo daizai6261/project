@@ -113,7 +113,7 @@ def book_create():
         # is_valid_audio_file = utils.tab_valid(osd_en_audio_file, error_book_output_path, id_, 5, 4)
         # is_valid_unit_file = utils.tab_valid(osd_book_unit_file, error_book_output_path, id_, 4, 4)
         # if (is_valid_audio_file and is_valid_unit_file):
-        utils.modify_configs_v3(osd_en_audio_file, dest_en_audio_file)
+        shutil.copy(osd_en_audio_file, dest_en_audio_file)
 
 
 def book_valid():
@@ -127,7 +127,7 @@ def book_valid():
 
         #
         # # 判断tab是否出错
-        is_valid_audio_file = utils.tab_valid(osd_en_audio_file, error_book_output_path, id_, 6, 5)
+        is_valid_audio_file = utils.tab_valid(osd_en_audio_file, error_book_output_path, id_, 5, 5)
         is_valid_unit_file = utils.tab_valid(osd_book_unit_file, error_book_output_path, id_, 4, 4)
         if (is_valid_audio_file == False or is_valid_unit_file == False):
             is_valid = False

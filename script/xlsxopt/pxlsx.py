@@ -47,7 +47,7 @@ class PelbsXlsx:
         # utils.create_text_file(spk_en_audio_file, filed)
 
         temp_audit_file = utilsFile.get("temp_audit_file")
-        filed_word = "音乐标示\t英文内容\t中文翻译\t拼音\t位置\t行数\nSoundName\tContent\tChinese\tPinyin\tPos\tLine\n"
+        filed_word = "音乐标示\t英文内容\t中文翻译\t位置\t行数\nSoundName\tContent\tChinese\tPos\tLine\n"
         utils.create_text_file(temp_audit_file, filed_word)
 
     def xls2txt(self,  bTrans, restart,): 
