@@ -29,6 +29,15 @@ book_idxs = data_sheet1.col_values(0)[1:]
 book_idx_list = list(map(int, book_idxs))  # 99999       73, 82
 series = data_sheet1.col_values(5)[1:]
 series_list = list(map(int, series))
+splits = data_sheet1.col_values(8)[1:]
+split_list = list(map(int, splits))
+start_nums = data_sheet1.col_values(7)[1:]
+start_num_list = list(map(int, start_nums))
+
+book_names = data_sheet1.col_values(1)[1:]
+book_name_list = list(map(str, book_names))
+
+
 # 卡通化模型位置
 # anime_checkPoint_dir = "D:/Workship/Pelbs/Gen/project/AnimeGAN/checkpoint/AnimeGAN_Hayao_lsgan_300_300_1_3_10"
 anime_checkPoint_dir = configer.run_param("ANIMEGAN_CHECKPOINT_PATH")
@@ -44,8 +53,8 @@ def pdf_to_excel():
         # 创建config、texture文件夹
         [config_path, texture_path] = remake_dir(series_list[index], id_)
         # pdf转图片、并拷贝图片文件
-        pdf_to_img("D:/Workship/Pelbs/Gen/res/org/PEP人教版英语三年级上册电子课本.pdf",
-                   utilsFile.get("temp_texture_path_raw"), 1, 3, id_)
+        pdf_to_img(work_path + "temp/pdf/" + book_name_list[index] + ".pdf",
+                   utilsFile.get("temp_texture_path_raw"), split_list[index], start_num_list[index], id_)
         pORC.orc2xls(True)
         pXlsx.xls2txt(True, True)
         # # 拷贝生成出来的配置文件到config文件夹
