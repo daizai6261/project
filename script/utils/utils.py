@@ -16,10 +16,12 @@ import re
 import demjson
 from selenium import webdriver
 import fitz
+from PIL import Image
 
 class Utils():
     # 用于存储非法的文件夹路径
     in_valid_files = []
+    resFileList = []
 
     def cal_pos_max(self, max_pos_list, pos_list):
         lista = max_pos_list.split(",")
@@ -334,7 +336,9 @@ class Utils():
                     sound_name = line_contents[0]
                     english_content = line_contents[1]
                     chinese_content = line_contents[2]
-                    position = int(line_contents[3])
+                    position = 1
+                    if line_contents[3].isdigit():
+                        position = int(line_contents[3])
                     sound_name_head = sound_name.rsplit("_", 1)[0]
                     pinyin = utils.pinyin(chinese_content)
                     if position == 1:
@@ -649,6 +653,8 @@ class Utils():
         res = []
         for i in data2:
             res.append(i.text.replace(" ", ""))
+        if len(res) != 2:
+            return ['', '']
         return res
 
     def getPicture(self, index, chineseName, phraseOrWords, number, path):
@@ -848,5 +854,37 @@ class Utils():
             # 开始写图像
             pm.writePNG(img_path + str(pg) + ".png")
         pdf.close()
+
+    def findFiles(self, path, pattern):
+        # 首先遍历当前目录所有文件及文件夹
+        file_list = os.listdir(path)
+        # 循环判断每个元素是否是文件夹还是文件，是文件夹的话，递归
+        for file in file_list:
+            # 利用os.path.join()方法取得路径全名，并存入cur_path变量，否则每次只能遍历一层目录
+            cur_path = os.path.join(path, file)
+            # 判断是否是文件夹
+            if os.path.isdir(cur_path):
+                self.findFiles(cur_path)
+            else:
+                # 判断是否是特定文件名称
+                if re.match(pattern, file, flags=0)  != None:
+                    self.resFileList.append(cur_path)
+
+    # 将图片切成两份
+    def img_split(self, img_path):
+        img = Image.open(img_path)
+        img_size = img.size
+        # 图片高度
+        h = img_size[1]
+        # 图片宽度
+        w = img_size[0]
+        # 图片左边
+        left_img = img.crop((0, 0, int(w/2), h))
+        right_img = img.crop((int(w/2), 0, w, h))
+        return [left_img, right_img]
+
+
+
+
 
 utils = Utils()

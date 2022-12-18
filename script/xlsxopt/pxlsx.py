@@ -30,7 +30,7 @@ class PelbsXlsx:
     
     def get_unit_list(self):
         arr = []
-        book_unit_file = utilsFile.get("book_unit_file")
+        book_unit_file = utilsFile.get("book_unit_file_1")
         for num, line in enumerate(open(book_unit_file, 'r',  encoding="utf-8")):
             if num < 2 : continue
             unit_name = line.split("\t")[1]
@@ -39,16 +39,16 @@ class PelbsXlsx:
         return arr
     
     def reset_all(self):
-        spk_en_audio_file = utilsFile.get("spk_en_audio_file") 
+        spk_en_audio_file = utilsFile.get("osd_en_audio_file")
         txt_folder_path = utilsFile.get("txt_folder_path")
-        
-        utils.mkdir(txt_folder_path)
-        filed = "音乐标示\t英文内容\t中文翻译\t位置\t行数\nSoundName\tContent\tChinese\tPos\tLine\n" 
-        utils.create_text_file(spk_en_audio_file, filed)
 
-        temp_follow_file = utilsFile.get("temp_follow_file")
-        filed_word = "音乐标示\t英文内容\t中文翻译\nSoundName\tContent\tChinese\n" 
-        utils.create_text_file(temp_follow_file, filed_word)
+        utils.mkdir(txt_folder_path)
+        # filed = "音乐标示\t英文内容\t中文翻译\t位置\t行数\nSoundName\tContent\tChinese\tPos\tLine\n"
+        # utils.create_text_file(spk_en_audio_file, filed)
+
+        temp_audit_file = utilsFile.get("temp_audit_file")
+        filed_word = "音乐标示\t英文内容\t中文翻译\t拼音\t位置\t行数\nSoundName\tContent\tChinese\tPinyin\tPos\tLine\n"
+        utils.create_text_file(temp_audit_file, filed_word)
 
     def xls2txt(self,  bTrans, restart,): 
         if restart: self.reset_all()       #如果没有中断,重置
@@ -58,8 +58,8 @@ class PelbsXlsx:
         self.end_body_num = 1
         self.end_body_idx = 0
     
-        temp_follow_file = utilsFile.get("temp_follow_file")
-        faudio = open(temp_follow_file, "a+",  encoding="utf-8")
+        temp_audit_file = utilsFile.get("temp_audit_file")
+        faudio = open(temp_audit_file, "a+",  encoding="utf-8")
 
         wb = openpyxl.load_workbook(self.xlsx_path)
         wss = wb.get_sheet_names()

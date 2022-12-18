@@ -38,7 +38,7 @@ def word_create():
             os.makedirs(osd_configs_path)
         if not utils.genPhonetics(file_path, osd_configs_path + file):
             return
-        # shutil.copy(file_path, osd_configs_path)
+        shutil.copy(file_path, osd_configs_path)
 
         if not cur_idx: cur_idx = 1
 
@@ -213,5 +213,5 @@ def word_config_create():
 
 if __name__ == '__main__':
     # word_config_create()
-    # if word_valid():
-    word_create()
+    if word_valid():
+        word_create()

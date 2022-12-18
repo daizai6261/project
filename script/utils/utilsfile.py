@@ -19,7 +19,8 @@ class UtilsFile():
         self.paths["work_path"]  = configer.run_param("PROJECT_PATH")
         self.paths["temp_path"]  = self.paths["work_path"] + "temp/"
         self.paths["temp_texture_path"]  = self.paths["temp_path"] + "texture/"
-        self.paths["temp_xls_file"] = self.paths["temp_path"] + "xlsFile.xlsx"
+        self.paths["temp_texture_path_raw"] = self.paths["temp_path"] + "texture_raw/" + "book" + self.str_book_idx + "/"  # 用于存放pdf切割后的图片
+        self.paths["temp_xls_file"] = self.paths["temp_path"] + "xlsFile_" + self.str_book_idx + ".xlsx"
         self.paths["temp_sound_path"]  = self.paths["temp_path"] + "sound/"
         self.paths["tts_idx_path"]  = self.paths["work_path"] + "data/tts_idx.txt"          #顺序控制文件
 
@@ -33,6 +34,8 @@ class UtilsFile():
         self.paths["res_sound_path"] = self.paths["res_path"] + "sound/"
         self.paths["res_osd_texture_path"] = self.paths["res_path"] + "osd_texture/"
         self.paths["res_texture_path"] = self.paths["work_path"] + "res/org/texture/"
+        self.paths["res_texture_path_1"] = self.paths["work_path"] + "res/org/texture/book" + self.str_book_idx + "/"
+        self.paths["res_texture_path_2"] = self.paths["work_path"] + "res/org/series" + self.book_series + "/book" + self.str_book_idx + "/osd_texture/"
         self.paths["dest_path"]  = self.paths["work_path"] + "dest/series"+ self.book_series +"/book" + self.str_book_idx + "/"
         # self.paths["dest_texture_path"] = self.paths["dest_path"] + self.speaker + "_texture/"
         self.paths["dest_texture_path"] = self.paths["dest_path"] + "osd_texture/"
@@ -46,8 +49,12 @@ class UtilsFile():
 
 
         self.paths["temp_follow_file"] = self.paths["temp_path"] + "configs/"+ "EnglishFollowup_" + self.str_book_idx + ".txt"
+        self.paths["temp_audit_file"] = self.paths["temp_path"] + "configs/" + "EnglishAudio_" + self.str_book_idx + ".txt"
         self.paths["txt_folder_path"] = self.paths["work_path"] + "dest/bookCfg/"
         self.paths["book_unit_file"] = self.paths["txt_folder_path"] + "BookUnit_" + self.str_book_idx + ".txt"
+
+        self.paths["txt_folder_path_1"] = self.paths["work_path"] + "temp/bookCfg/"
+        self.paths["book_unit_file_1"] = self.paths["txt_folder_path_1"] + "BookUnit_" + self.str_book_idx + ".txt"
 
 
         self.paths["spk_config_path"] = self.paths["res_path"] + self.speaker + "_configs/"
