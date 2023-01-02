@@ -1,6 +1,7 @@
 import os
 import re
 
+
 class WordUtil:
     resFileList = []
     resList = []
@@ -56,11 +57,11 @@ class WordUtil:
         for index in range(len(self.resList)):
             if '\n' not in self.resChineseList[index]:
                 self.resChineseList[index] = self.resChineseList[index] + "\n"
-            res += str(index) + "\t" + self.resCodeList[index] + "\t" + self.resList[index] + "\t" + self.resChineseList[index]
+            res += str(index) + "\t" + self.resCodeList[index] + "\t" + self.resList[index] + "\t" + \
+                   self.resChineseList[index]
 
         # 3、输出txt
         self.writeFile(fileOutPath, fileOutName, res)
-
 
     def book_num_map(self, path):
         pattern = re.compile(r'\d+')
@@ -86,8 +87,54 @@ class WordUtil:
                 self.findFiles(cur_path)
             else:
                 # 判断是否是特定文件名称
-                if re.match(r"^(EnglishFollowup)_[0-9]*(\.txt)$", file, flags=0)  != None:
+                if re.match(r"^(EnglishFollowup)_[0-9]*(\.txt)$", file, flags=0) != None:
                     self.resFileList.append(cur_path)
+
+    def append_word(self, file_path, file_input_path_list, map_file):
+        # 1、获取文件夹下的所有文件
+        for file_input_path in file_input_path_list:
+            self.findFiles(file_input_path)
+        pattern = re.compile(r'\d+')
+        self.book_num_map(map_file)
+        # 2、获取已经去重好的单词列表并返回已经存在的单词数量
+        exist_count = (self.read_single_words(file_path) + 1)
+        # 3、读取txt
+        for file in self.resFileList:
+            bookNum = pattern.findall(file)[-1]
+            code = ""
+            for bookObj in self.resMapList:
+                if bookNum == bookObj["bookNum"]:
+                    code = bookObj["code"]
+            self.readFile(file, code)
+        res = ""
+
+        for index in range(len(self.resList) - exist_count):
+            if '\n' not in self.resChineseList[index]:
+                self.resChineseList[index] = self.resChineseList[index] + "\n"
+            res += str(index + exist_count) + "\t" + self.resCodeList[index] + "\t" + self.resList[
+                index + exist_count] + "\t" + \
+                   self.resChineseList[index]
+
+        # 3、输出txt
+        self.append_file(file_path)
+
+    # 获取已经去重的单词并返回最后一个单词序号
+    def read_single_words(self, file_path):
+        with open(file_path, "r", encoding="utf-8") as f:
+            index = 0
+            for line in f:
+                if len(line) > 0:
+                    index = line[0]
+                    word = line[2]
+                    self.resList.append(word)
+            f.close()
+            return index
+
+    # 文件追加
+    def append_file(self, file_path, append_content):
+        with open(file_path, 'a', encoding='utf-8') as f:
+            f.write(append_content)
+            f.close()
 
 
 wordUtil = WordUtil()
