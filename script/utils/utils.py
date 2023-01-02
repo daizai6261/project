@@ -994,4 +994,32 @@ class Utils():
                     continue
                 index += 1
 
+    def folder_rename(self, file_path, out_put_path):
+        '''
+        将文件名都改成数字
+        @param file_path: 输入的文件路径
+        @param out_put_path：输出的文件路径
+        @return:
+        '''
+        if not os.path.exists(out_put_path):
+            os.makedirs(out_put_path)
+        files = os.listdir(file_path)
+        for file in files:
+            # 获取到某个单词文件夹路径
+            cur_path = os.path.join(file_path, file)
+            cur_pic_paths = os.listdir(cur_path)
+            pattern = re.compile(r'\d+')
+            numbers = pattern.findall(file)
+            new_file_name = str(numbers[0])
+
+            dest_path = os.path.join(out_put_path, new_file_name)
+            if not os.path.exists(dest_path):
+                os.makedirs(dest_path)
+
+            index = 0
+            for cur_pic_name in cur_pic_paths:
+                cur_pic_path = os.path.join(cur_path, cur_pic_name)
+                shutil.copy(cur_pic_path, dest_path +"/" + str(index) + ".png")
+                index += 1
+
 utils = Utils()
