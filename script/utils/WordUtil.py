@@ -116,7 +116,7 @@ class WordUtil:
                    self.resChineseList[index]
 
         # 3、输出txt
-        self.append_file(file_path)
+        self.append_file(file_path, res)
 
     # 获取已经去重的单词并返回最后一个单词序号
     def read_single_words(self, file_path):
@@ -124,11 +124,12 @@ class WordUtil:
             index = 0
             for line in f:
                 if len(line) > 0:
-                    index = line[0]
-                    word = line[2]
+                    line_contents = line.split("\t")
+                    index = line_contents[0]
+                    word = line_contents[2]
                     self.resList.append(word)
             f.close()
-            return index
+            return int(index)
 
     # 文件追加
     def append_file(self, file_path, append_content):
