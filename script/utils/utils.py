@@ -883,8 +883,32 @@ class Utils():
         right_img = img.crop((int(w/2), 0, w, h))
         return [left_img, right_img]
 
+    def append_phonetic(self, file_path, index):
+        '''
+        在文件每行的某个位置追加音标
+        @param file_path: 需要追加的文件
+        @param index: 所在位置
+        @return:
+        '''
+        with open(file_path, 'r', encoding='utf-8') as f:
+            res = ""
+            for line in f:
+                word_contents = line.split("\t")[index]
+                # 存在多个单词的情况
+                words = word_contents.split(" ")
+                US = 'None-Phonetic'
+                UK = 'None-Phonetic'
+                for w in words:
+                    res, n = re.subn(r"[^a-zA-Z’]+", "", w)
+                    [UK_temp, US_temp] = self.getPhonetic(res)
+                    UK += UK_temp + " "
+                    US += US_temp + " "
+                res += line[:-1] + "\t" + UK + "\t" + US + "\n"
+            f.close()
 
-
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(res)
+            f.close()
 
 
 utils = Utils()
