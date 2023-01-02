@@ -910,5 +910,39 @@ class Utils():
             f.write(res)
             f.close()
 
+    def merge_baidu_google_files(self, baidu_file_path, google_file_path, out_put_path):
+        '''
+        合并谷歌百度两个文件夹下的图片
+        @param baidu_file_path: 百度图片根路径
+        @param google_file_path: 谷歌图片根路径
+        @param out_put_path: 合并后所在的根路径
+        @return:
+        '''
+
+        if not os.path.exists(out_put_path):
+            os.makedirs(out_put_path)
+
+        files = os.listdir(baidu_file_path)
+        for file in files:
+            # 获取到某个单词文件夹路径
+            cur_baidu_path = os.path.join(baidu_file_path, file)
+            cur_google_path = os.path.join(google_file_path, file)
+            cur_baidu_pic_paths = os.listdir(cur_baidu_path)
+            cur_google_pic_paths = os.listdir(cur_google_path)
+
+            dest_path = os.path.join(out_put_path, file)
+            if not os.path.exists(dest_path):
+                os.makedirs(dest_path)
+
+            index = 0
+            for cur_pic_name in cur_baidu_pic_paths:
+                cur_pic_path = os.path.join(cur_baidu_path, cur_pic_name)
+                shutil.copy(cur_pic_path, dest_path + str(index) + ".png")
+                index += 1
+
+            for cur_pic_name in cur_google_pic_paths:
+                cur_pic_path = os.path.join(cur_baidu_path, cur_pic_name)
+                shutil.copy(cur_pic_path, dest_path + str(index) + ".png")
+                index += 1
 
 utils = Utils()
