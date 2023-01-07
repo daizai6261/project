@@ -16,10 +16,12 @@ import re
 import demjson
 from selenium import webdriver
 import fitz
+from PIL import Image
 
 class Utils():
     # 用于存储非法的文件夹路径
     in_valid_files = []
+    resFileList = []
 
     def cal_pos_max(self, max_pos_list, pos_list):
         lista = max_pos_list.split(",")
@@ -334,7 +336,9 @@ class Utils():
                     sound_name = line_contents[0]
                     english_content = line_contents[1]
                     chinese_content = line_contents[2]
-                    position = int(line_contents[3])
+                    position = 1
+                    if line_contents[3].isdigit():
+                        position = int(line_contents[3])
                     sound_name_head = sound_name.rsplit("_", 1)[0]
                     pinyin = utils.pinyin(chinese_content)
                     if position == 1:
@@ -649,6 +653,8 @@ class Utils():
         res = []
         for i in data2:
             res.append(i.text.replace(" ", ""))
+        if len(res) != 2:
+            return ['', '']
         return res
 
     def getPicture(self, index, chineseName, phraseOrWords, number, path):
@@ -718,9 +724,9 @@ class Utils():
     def getImgByWord(self, originPath, number, keyWord, outputPath):
         with open(originPath, 'r', encoding='utf-8') as f:
             for line in f:
-                phraseOrWords = line.split('\t')[1].strip('\n')
+                phraseOrWords = line.split('\t')[2].strip('\n')
                 index = line.split('\t')[0]
-                chineseName = line.split('\t')[2].strip('\n')
+                chineseName = line.split('\t')[3].strip('\n')
                 utils.getPicture(index, chineseName, phraseOrWords + keyWord, number, outputPath)
                 print(phraseOrWords + "抓取成功")
                 time.sleep(2)
@@ -794,9 +800,9 @@ class Utils():
     def run_get_google_pic(self, chrome_driver, origin_path, keyword_addition, num, sleep_time, output_path):
         with open(origin_path, 'r', encoding='utf-8') as f:
             for line in f:
-                phrase_or_words = line.split('\t')[1].strip('\n')
+                phrase_or_words = line.split('\t')[2].strip('\n')
                 index = line.split('\t')[0]
-                chineseName = line.split('\t')[2].strip('\n')
+                chineseName = line.split('\t')[3].strip('\n')
                 url = 'https://www.google.com.hk/search?q=' + phrase_or_words + ' ' + keyword_addition + '&source=lnms&tbm=isch'
                 browser = self.init_browser(url, chrome_driver)
                 self.get_google_pic(browser, num, sleep_time, output_path, index, chineseName)
@@ -848,5 +854,183 @@ class Utils():
             # 开始写图像
             pm.writePNG(img_path + str(pg) + ".png")
         pdf.close()
+
+    def findFiles(self, path, pattern):
+        # 首先遍历当前目录所有文件及文件夹
+        file_list = os.listdir(path)
+        # 循环判断每个元素是否是文件夹还是文件，是文件夹的话，递归
+        for file in file_list:
+            # 利用os.path.join()方法取得路径全名，并存入cur_path变量，否则每次只能遍历一层目录
+            cur_path = os.path.join(path, file)
+            # 判断是否是文件夹
+            if os.path.isdir(cur_path):
+                self.findFiles(cur_path, pattern)
+            else:
+                # 判断是否是特定文件名称
+                if re.match(pattern, file, flags=0)  != None:
+                    self.resFileList.append(cur_path)
+
+    # 将图片切成两份
+    def img_split(self, img_path):
+        img = Image.open(img_path)
+        img_size = img.size
+        # 图片高度
+        h = img_size[1]
+        # 图片宽度
+        w = img_size[0]
+        # 图片左边
+        left_img = img.crop((0, 0, int(w/2), h))
+        right_img = img.crop((int(w/2), 0, w, h))
+        return [left_img, right_img]
+
+    def append_phonetic(self, file_path, file_name, index, total):
+        '''
+        在文件每行的某个位置追加音标
+        @param file_path: 需要追加的文件
+        @param index: 所在位置
+        @param total: 文件行数-1
+        @return:
+        '''
+
+        # 先找到slice文件
+        self.resFileList = []
+        self.findFiles(file_path, r"slice[0-9]*.txt")
+        pattern = re.compile(r'\d+')
+        # 用来存最后的slice文件号
+        max_number = -1
+        for slice_file in self.resFileList:
+            numbers = pattern.findall(slice_file)
+            number = int(numbers[0])
+            if number >= max_number:
+                max_number = number
+
+        start_line = (max_number + 1) * 200
+
+        # 当前行
+        now_line = -1
+        with open(file_path + file_name, 'r', encoding='utf-8') as f:
+            result = ""
+            # 每隔200个保存一次
+            slice_count = 0
+            slice_num = max_number + 1
+            error_message = ''
+            for line in f:
+                now_line += 1
+                if now_line < start_line:
+                    continue
+                word_contents = line.split("\t")[index]
+                # 存在多个单词的情况
+                words = word_contents.split(" ")
+                US = ''
+                UK = ''
+                # 记录每行句子的单词所在位置
+                word_count = 0
+                for w in words:
+                    word_count += 1
+                    res, n = re.subn(r"[^a-zA-Z’]+", "", w)
+                    time.sleep(2)
+                    [UK_temp, US_temp] = self.getPhonetic(res)
+                    if US_temp == '' or UK_temp == '':
+                        error_message += "第" + str(now_line + 1) + "行的第" + str(word_count) + "个单词的音标获取失败！\n"
+                    UK += UK_temp + " "
+                    US += US_temp + " "
+                result += line[:-1] + "\t" + UK + "\t" + US + "\n"
+                slice_count += 1
+                if slice_count == 200 or now_line == total:
+                    with open(file_path + "slice" + str(slice_num) + ".txt", 'w', encoding='utf-8') as fi:
+                        fi.write(result)
+                        fi.close()
+                    if error_message != '':
+                        with open(file_path + "slice-error" + str(slice_num) + ".txt", 'w', encoding='utf-8') as fii:
+                            fii.write(error_message)
+                            fii.close()
+                    slice_count = 0
+                    slice_num += 1
+                    time.sleep(20)
+                print(line[:-1] + "\t" + UK + "\t" + US + "\n")
+            f.close()
+
+    def merge_baidu_google_files(self, baidu_file_path, google_file_path, out_put_path):
+        '''
+        合并谷歌百度两个文件夹下的图片
+        @param baidu_file_path: 百度图片根路径
+        @param google_file_path: 谷歌图片根路径
+        @param out_put_path: 合并后所在的根路径
+        @return:
+        '''
+
+        if os.path.exists(out_put_path):
+            shutil.rmtree(out_put_path)
+        os.makedirs(out_put_path)
+
+        files = os.listdir(baidu_file_path)
+        for file in files:
+            # 获取到某个单词文件夹路径
+            cur_baidu_path = os.path.join(baidu_file_path, file)
+            cur_google_path = os.path.join(google_file_path, file)
+            try:
+                cur_baidu_pic_paths = os.listdir(cur_baidu_path)
+            except:
+                print("找不到文件" + cur_baidu_pic_paths)
+                continue
+
+            try:
+                cur_google_pic_paths = os.listdir(cur_google_path)
+            except:
+                print("找不到文件" + cur_google_pic_paths)
+                continue
+
+            dest_path = os.path.join(out_put_path, file)
+            if os.path.exists(dest_path):
+                shutil.rmtree(dest_path)
+            os.makedirs(dest_path)
+
+            index = 0
+            for cur_pic_name in cur_baidu_pic_paths:
+                try:
+                    cur_pic_path = os.path.join(cur_baidu_path, cur_pic_name)
+                    shutil.copy(cur_pic_path, dest_path + "/" + str(index) + ".png")
+                except:
+                    print("找不到文件" + cur_pic_path)
+                    continue
+                index += 1
+
+
+            for cur_pic_name in cur_google_pic_paths:
+                try:
+                    cur_pic_path = os.path.join(cur_google_path, cur_pic_name)
+                    shutil.copy(cur_pic_path, dest_path + "/" + str(index) + ".png")
+                except:
+                    print("找不到文件" + cur_pic_path)
+                    continue
+                index += 1
+
+    def folder_rename(self, file_path, out_put_path):
+        '''
+        将文件名都改成数字
+        @param file_path: 输入的文件路径
+        @param out_put_path：输出的文件路径
+        @return:
+        '''
+        if not os.path.exists(out_put_path):
+            os.makedirs(out_put_path)
+        files = os.listdir(file_path)
+        for file in files:
+            # 获取到某个单词文件夹路径
+            cur_path = os.path.join(file_path, file)
+            cur_pic_paths = os.listdir(cur_path)
+            pattern = re.compile(r'\d+')
+            numbers = pattern.findall(file)
+            new_file_name = str(numbers[0])
+
+            dest_path = os.path.join(out_put_path, new_file_name)
+            if not os.path.exists(dest_path):
+                os.makedirs(dest_path)
+
+            index = 0
+            for cur_pic_name in cur_pic_paths:
+                cur_pic_path = os.path.join(cur_path, cur_pic_name)
+                shutil.copy(cur_pic_path, dest_path +"/" + str(index) + ".png")
+                index += 1
 
 utils = Utils()
