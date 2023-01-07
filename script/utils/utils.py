@@ -883,11 +883,12 @@ class Utils():
         right_img = img.crop((int(w/2), 0, w, h))
         return [left_img, right_img]
 
-    def append_phonetic(self, file_path, file_name, index):
+    def append_phonetic(self, file_path, file_name, index, total):
         '''
         在文件每行的某个位置追加音标
         @param file_path: 需要追加的文件
         @param index: 所在位置
+        @param total: 文件行数-1
         @return:
         '''
 
@@ -912,6 +913,7 @@ class Utils():
             # 每隔200个保存一次
             slice_count = 0
             slice_num = max_number + 1
+            error_message = ''
             for line in f:
                 now_line += 1
                 if now_line < start_line:
@@ -921,18 +923,27 @@ class Utils():
                 words = word_contents.split(" ")
                 US = ''
                 UK = ''
+                # 记录每行句子的单词所在位置
+                word_count = 0
                 for w in words:
+                    word_count += 1
                     res, n = re.subn(r"[^a-zA-Z’]+", "", w)
                     time.sleep(2)
                     [UK_temp, US_temp] = self.getPhonetic(res)
+                    if US_temp == '' or UK_temp == '':
+                        error_message += "第" + str(now_line + 1) + "行的第" + str(word_count) + "个单词的音标获取失败！\n"
                     UK += UK_temp + " "
                     US += US_temp + " "
                 result += line[:-1] + "\t" + UK + "\t" + US + "\n"
                 slice_count += 1
-                if slice_count == 200:
+                if slice_count == 200 or now_line == total:
                     with open(file_path + "slice" + str(slice_num) + ".txt", 'w', encoding='utf-8') as fi:
                         fi.write(result)
                         fi.close()
+                    if error_message != '':
+                        with open(file_path + "slice-error" + str(slice_num) + ".txt", 'w', encoding='utf-8') as fii:
+                            fii.write(error_message)
+                            fii.close()
                     slice_count = 0
                     slice_num += 1
                     time.sleep(20)
