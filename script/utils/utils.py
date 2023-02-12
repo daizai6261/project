@@ -18,6 +18,7 @@ from selenium import webdriver
 import fitz
 from PIL import Image
 
+
 class Utils():
     # 用于存储非法的文件夹路径
     in_valid_files = []
@@ -570,7 +571,8 @@ class Utils():
                     if (split_num != title_word_num):
                         msg += "[" + origin_file + "]中的tab键个数出错：第" + str(count + 1) + "行tab键个数为" + str(
                             split_num - 1) + '\n'
-                        print('\033[0;31;40m' + "[" + origin_file + "]中的tab键个数出错：第" + str(count + 1) + "行tab键个数为" + str(
+                        print('\033[0;31;40m' + "[" + origin_file + "]中的tab键个数出错：第" + str(
+                            count + 1) + "行tab键个数为" + str(
                             split_num - 1) + '\033[0m')
                         flag = 1
                 else:
@@ -579,7 +581,8 @@ class Utils():
                     if (split_num != content_word_num):
                         msg += "[" + origin_file + "]中的tab键个数出错：第" + str(count + 1) + "行tab键个数为" + str(
                             split_num - 1) + '\n'
-                        print('\033[0;31;40m' + "[" + origin_file + "]中的tab键个数出错：第" + str(count + 1) + "行tab键个数为" + str(
+                        print('\033[0;31;40m' + "[" + origin_file + "]中的tab键个数出错：第" + str(
+                            count + 1) + "行tab键个数为" + str(
                             split_num - 1) + '\033[0m')
                         flag = 1
                 count = count + 1
@@ -602,15 +605,15 @@ class Utils():
     def mov_files(self, source_path, target_path):
         ls = os.listdir(source_path)
         for item in ls:
-            ls2 = os.listdir(source_path+item)
+            ls2 = os.listdir(source_path + item)
             if not os.path.exists(target_path + item):
                 # 如果目标路径不存在原文件夹的话就创建
                 os.makedirs(target_path + item)
             for sub_item in ls2:
                 new_file_name = sub_item.replace('_en', '')
                 if '_en' in sub_item:
-                    shutil.copyfile(source_path+item+"/"+sub_item, target_path + item + "/" + new_file_name)
-                    os.remove(source_path+item+"/"+sub_item)
+                    shutil.copyfile(source_path + item + "/" + sub_item, target_path + item + "/" + new_file_name)
+                    os.remove(source_path + item + "/" + sub_item)
 
     def genPhonetics(self, source_path, target_path):
         file_data = ""
@@ -621,14 +624,14 @@ class Utils():
                     count = count + 1
                     continue
                 if count < 2:
-                    if(count == 0):
+                    if (count == 0):
                         new_line = line[:-1] + "\t" + "美式音标\t" + "英式音标\n"
                     else:
                         new_line = line[:-1] + "\t" + "KkSymbol\t" + "IpaSymbol\n"
                 else:
                     line_contents = line.split("\t")
                     word = line_contents[1]
-                    #可能存在多个单词
+                    # 可能存在多个单词
                     words = word.split(" ")
                     US = ''
                     UK = ''
@@ -646,7 +649,7 @@ class Utils():
         return True
 
     def getPhonetic(self, word):
-        url = 'https://youdao.com/result?word=' + word +  '&lang=en'
+        url = 'https://youdao.com/result?word=' + word + '&lang=en'
         data = requests.get(url, proxies=random.choice(self.get_ips())).text
         soup = BeautifulSoup(data, 'lxml')
         data2 = soup.select('.phone_con > .per-phone > .phonetic')
@@ -659,7 +662,8 @@ class Utils():
 
     def getPicture(self, index, chineseName, phraseOrWords, number, path):
         page = 0
-        header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36'}
+        header = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36'}
         url = 'https://image.baidu.com/search/acjson'
         params = {
             "tn": "resultjson_com",
@@ -699,7 +703,7 @@ class Utils():
             "1617626956685": ""
         }
         # result = requests.get(url, headers=header, params=params).json()
-        result = requests.get(url, headers=header, params=params,proxies=random.choice(self.get_ips())).text
+        result = requests.get(url, headers=header, params=params, proxies=random.choice(self.get_ips())).text
         result = demjson.decode(result)
         url_list = []
         for data in result['data'][:-1]:
@@ -730,7 +734,6 @@ class Utils():
                 utils.getPicture(index, chineseName, phraseOrWords + keyWord, number, outputPath)
                 print(phraseOrWords + "抓取成功")
                 time.sleep(2)
-
 
     def get_ips(self):
         ips1 = []
@@ -782,7 +785,8 @@ class Utils():
                             if new_img_elements:
                                 for new_img_element in new_img_elements:
                                     src = new_img_element.get_attribute('src')
-                                    if src.startswith('http') and not src.startswith('https://encrypted-tbn0.gstatic.com'):
+                                    if src.startswith('http') and not src.startswith(
+                                            'https://encrypted-tbn0.gstatic.com'):
                                         print('Found' + str(count) + 'st image url')
                                         self.getImg(src, count, output_path + "/" + idx + "_" + chineseName + "/")
                                         count += 1
@@ -816,7 +820,7 @@ class Utils():
                     continue
                 line_contents = line.split("\t")
                 code = line_contents[0]
-                word = line_contents[1]
+                word = line_contents[3][:-1]
                 word_code_dict[word] = code
         f.close()
         return word_code_dict
@@ -867,7 +871,7 @@ class Utils():
                 self.findFiles(cur_path, pattern)
             else:
                 # 判断是否是特定文件名称
-                if re.match(pattern, file, flags=0)  != None:
+                if re.match(pattern, file, flags=0) != None:
                     self.resFileList.append(cur_path)
 
     # 将图片切成两份
@@ -879,8 +883,8 @@ class Utils():
         # 图片宽度
         w = img_size[0]
         # 图片左边
-        left_img = img.crop((0, 0, int(w/2), h))
-        right_img = img.crop((int(w/2), 0, w, h))
+        left_img = img.crop((0, 0, int(w / 2), h))
+        right_img = img.crop((int(w / 2), 0, w, h))
         return [left_img, right_img]
 
     def append_phonetic(self, file_path, file_name, index, total):
@@ -995,7 +999,6 @@ class Utils():
                     continue
                 index += 1
 
-
             for cur_pic_name in cur_google_pic_paths:
                 try:
                     cur_pic_path = os.path.join(cur_google_path, cur_pic_name)
@@ -1030,7 +1033,89 @@ class Utils():
             index = 0
             for cur_pic_name in cur_pic_paths:
                 cur_pic_path = os.path.join(cur_path, cur_pic_name)
-                shutil.copy(cur_pic_path, dest_path +"/" + str(index) + ".png")
+                shutil.copy(cur_pic_path, dest_path + "/" + str(index) + ".png")
                 index += 1
+
+    def format_code(self, input_index, input_path, new_path):
+        '''
+        按名称找到对应的图片code
+        '''
+        PROJECT_PATH = configer.run_param("PROJECT_PATH")
+        word_code_dict = utils.get_word_code(PROJECT_PATH + "dest/pic_word/result-小学英语(含湘少，冀教一起，闽教).txt")
+        if not os.path.exists(new_path):
+            os.makedirs(new_path)
+
+        files = os.listdir(input_path)
+        for file in files:
+            index = file.split("_")[0]
+            name = file.split("_")[1]
+            cur_path = os.path.join(input_path, file)
+
+            if int(index) >= input_index:
+                new_code = word_code_dict.get(name)
+                if new_code is None:
+                    new_code = "None"
+                file = new_code + '_' + name
+            out_path = os.path.join(new_path, file)
+
+            if not os.path.exists(out_path):
+                os.makedirs(out_path)
+
+            pics = os.listdir(cur_path)
+
+            count = 0
+            for pic in pics:
+                origin_pic = os.path.join(cur_path, pic)
+                new_pic = os.path.join(out_path, str(count) + '.png')
+                shutil.copy(origin_pic, new_pic)
+                count = count + 1
+
+    def compress_pic(self, pic, pic_weight, out_path, pic_name):
+        '''
+        图片压缩
+        @param   pic:输入的图片
+        @param  pic_weight：输出的图片宽度
+        @param   out_path：图片输出路径
+        @param   pic_name：图片压缩后的名称
+        '''
+        img = Image.open(pic)
+        (x, y) = img.size
+        x_1 = pic_weight
+        y_1 = int(y * x_1 / x)
+        try:
+            out = img.resize((x_1, y_1), Image.ANTIALIAS)
+            if out.mode == 'RGBA':
+                # 转化为rgb格式
+                out = out.convert('RGB')
+            # 最后保存为jpg格式的图片，这里因为图片本身为jpg所以后缀不更改
+            out.save(out_path + "/" + str(pic_name) + ".png")
+        except:
+            shutil.copy(pic, out_path + "/" + str(pic_name) + ".png")
+
+    def folder_name_change(self, input_index, input_path, new_path):
+        '''
+            图片名称转为数字并压缩
+        '''
+        # if not os.path.exists(new_path):
+        #     os.makedirs(new_path)
+
+        files = os.listdir(input_path)
+        for file in files:
+            index = file.split("_")[0]
+            name = file.split("_")[1]
+            cur_path = os.path.join(input_path, file)
+            out_path = os.path.join(new_path, index)
+
+            if not os.path.exists(out_path):
+                os.makedirs(out_path)
+
+            pics = os.listdir(cur_path)
+
+            count = 0
+            for pic in pics:
+                origin_pic = os.path.join(cur_path, pic)
+                self.compress_pic(origin_pic, 200, out_path, count)
+                count = count + 1
+
 
 utils = Utils()
