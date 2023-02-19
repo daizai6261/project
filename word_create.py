@@ -118,7 +118,7 @@ def word_config_create():
 
     target_path = PROJECT_PATH + "dest/word_audio_output_path/" + "book" + "/osd_configs/"
 
-    word_code_dict = utils.get_word_code(PROJECT_PATH + "dest/pic_word/result-小学英语.txt")
+    word_code_dict = utils.get_word_code("D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail.txt")
 
     if not os.path.exists(target_path):
         # 如果目标路径不存在原文件夹的话就创建
@@ -145,9 +145,10 @@ def word_config_create():
                 continue
             if count < 2:
                 if count == 0:
-                    new_line = line[:-1] + "\t" + "美式音标\t" + "英式音标\t" + "图片编号\n"
+                    # new_line = line[:-1] + "\t" + "美式音标\t" + "英式音标\t" + "图片编号\n"
+                    new_line = "音乐标示" + "\t" + "英文内容" + "\t" + "中文翻译" + "\t" + "图片编号\n"
                 else:
-                    new_line = line[:-1] + "\t" + "KkSymbol\t" + "IpaSymbol\t" + "PicCode\n"
+                    new_line = "SoundName" + "\t" + "Content" + "\t" + "Chinese" + "\t" + "PicCode\n"
             else:
                 words = line.split("\t")
                 if len(words) == 2 and "wordslist_" in words[1]:
@@ -155,35 +156,36 @@ def word_config_create():
                     wordslist_file += file + "\n"
                     print("【" + file + "】:是wordlist文件，不进行操作")
                     break
-                if len(words) != 3:
-                    msg += "【" + file + "】中的第" + str(num + 1) + "行的tab个数不对\n"
-                    print("【" + file + "】中的第" + str(num + 1) + "行的tab个数不对")
-                    line_contents = line.split("\t")
-                    word = line_contents[1]
-                    pic_code = "NoneCode"
-                    if word_code_dict.get(word):
-                        pic_code = word_code_dict.get(word)
-                    new_line = line[: -1] + "\t" + pic_code + '\n'
+                # if len(words) != 3:
+                #     msg += "【" + file + "】中的第" + str(num + 1) + "行的tab个数不对\n"
+                #     print("【" + file + "】中的第" + str(num + 1) + "行的tab个数不对")
+                #     line_contents = line.split("\t")
+                #     word = line_contents[1]
+                #     pic_code = "NoneCode"
+                #     if word_code_dict.get(word):
+                #         pic_code = word_code_dict.get(word)
+                #     new_line = line[: -1] + "\t" + pic_code + '\n'
                 else:
                     line_contents = line.split("\t")
                     word = line_contents[1]
                     _words = word.split(" ")
                     US = ''
                     UK = ''
-                    for w in _words:
-                        try:
-                            res, n = re.subn(r"[^a-zA-Z’]+", "", w)
-                            [UK_temp, US_temp] = utils.getPhonetic(res)
-                            UK += UK_temp + " "
-                            US += US_temp + " "
-                        except:
-                            msg += "检查【" +file + "】第" + str(num + 1) + "行单词拼写是否出错\n"
-                            print("检查【" +file + "】第" + str(num + 1) + "行单词拼写是否出错")
-                            break
+                    # for w in _words:
+                    #     try:
+                    #         res, n = re.subn(r"[^a-zA-Z’]+", "", w)
+                    #         [UK_temp, US_temp] = utils.getPhonetic(res)
+                    #         UK += UK_temp + " "
+                    #         US += US_temp + " "
+                    #     except:
+                    #         msg += "检查【" +file + "】第" + str(num + 1) + "行单词拼写是否出错\n"
+                    #         print("检查【" +file + "】第" + str(num + 1) + "行单词拼写是否出错")
+                    #         break
                     pic_code = "NoneCode"
                     if word_code_dict.get(word):
                         pic_code = word_code_dict.get(word)
-                    new_line = line[: -1] + "\t" + US[:-1] + '\t' + UK[:-1] + '\t' + pic_code + '\n'
+                    # new_line = line[: -1] + "\t" + US[:-1] + '\t' + UK[:-1] + '\t' + pic_code + '\n'
+                    new_line = line_contents[0] + '\t' + line_contents[1] + '\t' + line_contents[2] + '\t' + pic_code + '\n'
             file_data += new_line
             count += 1
         if msg != "" and flag == 0:
@@ -212,6 +214,6 @@ def word_config_create():
 
 
 if __name__ == '__main__':
-    # word_config_create()
-    if word_valid():
-        word_create()
+    word_config_create()
+    # if word_valid():
+    #     word_create()

@@ -24,6 +24,28 @@ if __name__ == '__main__':
     # utils.pdf_to_image("C:\\Users\\40198\\Desktop\\新版PEP小学英语三年级上册电子课本.pdf", "C:\\Users\\40198\\Desktop\\pics-2\\", 5, 5, 0)
 
     # 追加音标
-    utils.append_phonetic(PROJECT_PATH + "dest/pic_word/", "result-小学英语(含湘少，冀教一起，闽教).txt" , 2)
+    # utils.append_phonetic(PROJECT_PATH + "dest/pic_word/", "result-小学英语(含湘少，冀教一起，闽教).txt" ,2, 4424)
     # 合并文件夹
-    utils.merge_baidu_google_files("D:/Workship/Pelbs/Gen/dest/pic_word/小学英语-谷歌-重新抓", "D:/Workship/Pelbs/Gen/dest/pic_word/小学英语-百度-重新抓", "D:/Workship/Pelbs/Gen/dest/pic_word/小学英语-合并-重新抓")
+    # utils.merge_baidu_google_files("D:/Workship/Pelbs/Gen/dest/pic_word/小学英语-谷歌-重新抓", "D:/Workship/Pelbs/Gen/dest/pic_word/小学英语-百度-重新抓", "D:/Workship/Pelbs/Gen/dest/pic_word/小学英语-合并-重新抓")
+    # 文件命名改为数字
+    # utils.folder_rename("D:/Workship/Pelbs/Gen/dest/pic_word/小学英语-合并", "orkship/Pelbs/Gen/dest/pic_word/小学英语-合并-最终版本")
+
+    # 图片文件夹重命名+压缩
+    utils.folder_name_change(100, "C:/Users/40198/Desktop/小学英语-合并/小学英语-整理后-去重/", "C:/Users/40198/Desktop/小学英语-合并/小学英语-final/")
+
+    # utils.find_symbol("D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail.txt", ";", "D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail-修订.txt")
+
+    # utils.find_duplicate_word("D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail.txt", 0, 2, "D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail-重复1.txt")
+    # utils.find("D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail-重复.txt")
+
+    # utils.move_file("D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail-重复.txt", "C:/Users/40198/Desktop/小学英语-合并/小学英语-整理后 - 副本/")
+
+    # utils.find_lianxu("C:/Users/40198/Desktop/小学英语-合并/小学英语-整理后-去重/", "D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/test/WordDetail_res.txt")
+
+    # utils.move_txt("D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail-重复.txt", "D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/test/WordDetail")
+
+    # utils.clear_duplicate("D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail-重复.txt", "D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/test/WordDetail49.txt", "D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/test/WordDetail_res.txt")
+
+
+    # 增加一列有效无效
+    # utils.add_valid_column("D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail_res.txt", "D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail_res1.txt")
