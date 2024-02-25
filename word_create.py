@@ -36,8 +36,8 @@ def word_create():
         if not os.path.exists(osd_configs_path):
             # 如果目标路径不存在原文件夹的话就创建
             os.makedirs(osd_configs_path)
-        if not utils.genPhonetics(file_path, osd_configs_path + file):
-            return
+        #if not utils.genPhonetics(file_path, osd_configs_path + file):
+            #return
         shutil.copy(file_path, osd_configs_path)
 
         if not cur_idx: cur_idx = 1
@@ -50,6 +50,8 @@ def word_create():
                 words = line.split("\t")
                 sound_file = words[0]
                 englishWord = words[1]
+                #过滤 *
+                englishWord = englishWord.replace('*', '')
                 unit_folder = sound_file.split("_")[0]
                 # 生成语音
                 sound_path = osd_sound_path + unit_folder + "/" + sound_file
@@ -79,12 +81,16 @@ def word_valid():
 
         if not cur_idx: cur_idx = 1
         msg = ""
+        tabNum = 4
         for num, line in enumerate(file_content):
+            if num == 1:    #第一行定义tab个数
+                fieldName = line.split("\t")
+                tabNum = len(fieldName)
             if len(line) == 0 or line == "\n":
                 continue
             if (num > 1) & (num > int(cur_idx)):
                 words = line.split("\t")
-                if len(words) != 3:
+                if len(words) != tabNum:
                     is_valid = False
                     msg += "【" + file + "】中的第" + str(num + 1) + "行的tab个数不对\n"
                     print("【" + file + "】中的第" + str(num + 1) + "行的tab个数不对")
@@ -93,7 +99,7 @@ def word_valid():
                     for w in words[1].split(" "):
                         try:
                             res, n = re.subn(r"[^a-zA-Z’]+", "", w)
-                            [UK_temp, US_temp] = utils.getPhonetic(res)
+                           # [UK_temp, US_temp] = utils.getPhonetic(res)
                         except:
                             msg += "检查【" +file + "】第" + str(num + 1) + "行单词拼写是否出错\n"
                             print("检查【" +file + "】第" + str(num + 1) + "行单词拼写是否出错")
@@ -214,6 +220,6 @@ def word_config_create():
 
 
 if __name__ == '__main__':
-    word_config_create()
-    # if word_valid():
-    #     word_create()
+    # word_config_create()
+    if word_valid():
+        word_create()

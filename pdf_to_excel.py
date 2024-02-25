@@ -59,9 +59,9 @@ def pdf_to_excel():
         pXlsx.xls2txt(True, True)
         # # 拷贝生成出来的配置文件到config文件夹
         copy_files(id_, config_path)
-        # 绘本生成
-        if book_valid():
-            book_create()
+    # 绘本生成
+    if book_valid():
+        book_create()
 
 
 # 创建config、texture文件夹
@@ -164,11 +164,11 @@ def pdf_to_img(pdf_path, temp_texture_path_raw, split, start_num, book_id):
 
     pic_index = 0
 
-    res_texture_path_excel = utilsFile.get("res_texture_path_1")
+    res_texture_path_excel = utilsFile.get("res_texture_path")
     utils.delete_folder(res_texture_path_excel)
     utils.mkdir(res_texture_path_excel)
     for img_num in range(start_num - 1, len(img_list)):
-        res_texture_path = utilsFile.get("res_texture_path_2")
+        res_texture_path = utilsFile.get("res_texture_path")
         unit_name = unit_list[pic_index].split("_")[0]
         utils.mkdir(res_texture_path_excel + unit_name)
         # 1表示需要进行图片切割)

@@ -46,9 +46,9 @@ def transformPinyin(fileRoot, errorFile):
 if __name__ == '__main__':
     PROJECT_PATH = configer.run_param("PROJECT_PATH")
     utils.resFileList = []
-    utils.findFiles(PROJECT_PATH + "/res/org/小学语文/", r"ChnWriteZi_[0-9]*.txt$")
-    utils.findFiles(PROJECT_PATH + "/res/org/小学语文/", r"CHNWord_[0-9]*.txt$")
-    errFile = PROJECT_PATH + "/res/org/小学语文/error.txt"
+    utils.findFiles("D:/Workship/Pelbs/Books/教材/小学语文", r"ChnWriteZi_[0-9]*.txt$")
+    utils.findFiles("D:/Workship/Pelbs/Books/教材/小学语文", r"CHNWord_[0-9]*.txt$")
+    errFile = PROJECT_PATH + "error.txt"
 
     transformPinyin(utils.resFileList, errFile)
 

@@ -23,18 +23,18 @@ class PelbsTTS:
     def txt2audio(self):
 
         self.tts()
-        self.optimize_audio()
-        self.copy_res_word()
+        #self.optimize_audio()
+
 
     def tts(self):
         temp_sound_path = utilsFile.get("temp_sound_path")
-        utils.recreate_folder(temp_sound_path)
+       # utils.recreate_folder(temp_sound_path)
 
-        osd_en_audio_file = utilsFile.get("osd_en_audio_file")
+        dest_all_audio_file = utilsFile.get("dest_all_audio_file")
         tts_idx_path = utilsFile.get("tts_idx_path")
 
         fdata = open(tts_idx_path, "r+", encoding="utf-8")
-        fpage_txt = open(osd_en_audio_file, 'r', encoding="utf-8")
+        fpage_txt = open(dest_all_audio_file, 'r', encoding="utf-8")
 
         cur_idx = fdata.readline()
         if not cur_idx: cur_idx = 1
@@ -158,36 +158,7 @@ class PelbsTTS:
         os.remove(path1)
         output_music.export(path1, format="mp3")  # 前面是保存路径，后面是保存格式
 
-    def copy_res_word(self):
 
-        # res_sound_path = utilsFile.get("res_sound_path")
-        temp_sound_path = utilsFile.get("temp_sound_path")
-        dest_sound_path = utilsFile.get("dest_sound_path")
-        osd_config_path = utilsFile.get("osd_config_path")
-        dest_config_path = utilsFile.get("dest_config_path")
-
-        utils.delete_folder(dest_sound_path)
-
-        unitList = os.listdir(temp_sound_path)
-        for unit in unitList:
-            res_floder_path = temp_sound_path + unit
-            if utils.is_meta(res_floder_path): continue
-            print("9", res_floder_path)
-            fileList = os.listdir(res_floder_path)
-            temp_unit_folder = temp_sound_path + unit + "/"
-            if not os.path.exists(temp_unit_folder):
-                utils.mkdir(temp_unit_folder)
-            for item_name in fileList:
-                unit_name, page_name = utils.split_file_name(item_name);
-                res_sound_file = temp_sound_path + "/" + unit + "/" + item_name
-                if utils.is_meta(res_sound_file): continue
-                ispage = re.match("page", page_name)
-                if not ispage:
-                    print("copy word file :", res_sound_file)
-                    shutil.copy(res_sound_file, temp_unit_folder)
-
-        utils.copy_all_folder(temp_sound_path, dest_sound_path)
-        utils.copy_all_folder(osd_config_path, dest_config_path)
 
 
 pTTS = PelbsTTS()

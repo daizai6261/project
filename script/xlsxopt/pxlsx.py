@@ -30,7 +30,7 @@ class PelbsXlsx:
     
     def get_unit_list(self):
         arr = []
-        book_unit_file = utilsFile.get("book_unit_file_1")
+        book_unit_file = utilsFile.get("book_unit_file")
         for num, line in enumerate(open(book_unit_file, 'r',  encoding="utf-8")):
             if num < 2 : continue
             unit_name = line.split("\t")[1]
@@ -46,9 +46,9 @@ class PelbsXlsx:
         # filed = "音乐标示\t英文内容\t中文翻译\t位置\t行数\nSoundName\tContent\tChinese\tPos\tLine\n"
         # utils.create_text_file(spk_en_audio_file, filed)
 
-        temp_audit_file = utilsFile.get("temp_audit_file")
+        temp_audio_file = utilsFile.get("temp_audio_file")
         filed_word = "音乐标示\t英文内容\t中文翻译\t位置\t行数\nSoundName\tContent\tChinese\tPos\tLine\n"
-        utils.create_text_file(temp_audit_file, filed_word)
+        utils.create_text_file(temp_audio_file, filed_word)
 
     def xls2txt(self,  bTrans, restart,): 
         if restart: self.reset_all()       #如果没有中断,重置
@@ -58,8 +58,8 @@ class PelbsXlsx:
         self.end_body_num = 1
         self.end_body_idx = 0
     
-        temp_audit_file = utilsFile.get("temp_audit_file")
-        faudio = open(temp_audit_file, "a+",  encoding="utf-8")
+        temp_audio_file = utilsFile.get("temp_audio_file")
+        faudio = open(temp_audio_file, "a+",  encoding="utf-8")
 
         wb = openpyxl.load_workbook(self.xlsx_path)
         wss = wb.get_sheet_names()
@@ -74,6 +74,7 @@ class PelbsXlsx:
             
             for idx in range(3, ws.max_row + 1):
                 if idx <= self.end_body_idx: continue
+
                 line = self.create_txt_line(ws, idx, bTrans)
                 if line != "": faudio.write(line)
             
@@ -85,8 +86,17 @@ class PelbsXlsx:
     def create_txt_line(self, ws, idx, bTrans):
         sound_file = ws.cell(row = idx, column = 1).value 
         english = ws.cell(row = idx, column = 2).value 
-        pos = ws.cell(row = idx, column = 3).value 
-        body = int(ws.cell(row = idx, column = 4).value )
+        pos = ws.cell(row = idx, column = 3).value
+        vBody = ws.cell(row = idx, column = 4).value
+        #body = int(ws.cell(row = idx, column = 4).value)
+
+        body = 1
+        #如果vbody的类型是int，那么就是数字，就用int函数转换
+        if type(vBody) == int:
+            body = int(vBody)
+        else:
+            body = 1
+
         
         if self.cur_unit_name != sound_file:
             self.cur_unit_name = sound_file
@@ -104,19 +114,20 @@ class PelbsXlsx:
 
         new_audio_name = sound_file + str(self.audioIdx)
         unit, page = utils.split_file_name(self.cur_unit_name)
-        
+
 
         unit_type = contentMgr.get_unit_type(unit)
         if contentMgr.get_trans_type(unit_type) == "TRANS_SPLIT": #单词直接切割，不用翻译
             english, chinese = utilsWord.split_en_cn(english) 
         else :
             chinese =  "翻译文本"
-            if bTrans: chinese = pTrans.trans(english) 
+            if bTrans: chinese = pTrans.trans(english)
 
-        
-        print("create_txt_line", new_audio_name, english, chinese, pos, line)
-        line = new_audio_name + "\t" + english + "\t" + chinese + "\t" + pos + "\t" + str(line) + "\n"
-    
+        sLine = str(line)  # f"{line}"
+        english = str(english)
+        print("create_txt_line", new_audio_name, english, chinese, pos, line, sLine)
+        #print("create_txt_line", type(new_audio_name), type(english), type(chinese), type(pos), type(line), type(sLine))
+        line = new_audio_name + "\t" + english + "\t" + chinese + "\t" + pos + "\t" + sLine + "\n"
         return line
 
 
@@ -127,11 +138,12 @@ class PelbsXlsx:
         max_pos = start_pos
 
         for i in range(endIdx, ws.max_row + 1):
-            
+
             english_txt = ws.cell(row = i, column = 2).value
             pos = ws.cell(row = i,column = 3).value
             next_body = int(ws.cell(row = i, column = 4).value) 
             start_english_txt = start_english_txt + " " + english_txt
+            #print("合并文本", english_txt, pos,next_body,start_english_txt)
             max_pos = utils.cal_pos_max(max_pos, pos)
             
             if next_body == 2:

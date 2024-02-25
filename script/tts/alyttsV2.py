@@ -37,12 +37,6 @@ class AlyTTS:
                              ["BeiHai", "北海"], ["TianShan", "天山"], ["TianChi", "天池"], ["XinJiang", "新疆"],
                              ["Yinchuan", "银川"], ["Nihao", "你好"], ["Luoyang", "洛阳"], ]
 
-    def set_speaker(self):
-        speakerList = configer.program_param("CURRENT_SPEAKER_LIST")
-        speaker_idx = 6
-        while self.speaker != speakerList[speaker_idx]:
-            speaker_idx = random.randint(0, len(speakerList))
-            self.speaker = speakerList[speaker_idx]
 
     def tts(self, text, path):
 
@@ -64,6 +58,7 @@ class AlyTTS:
         if len(text) < 250:
             self.short_tts(text, path)
         else:
+            print("long_tts", text)
             self.long_tts(text, path)
 
     def short_tts(self, text, path):
@@ -88,7 +83,7 @@ class AlyTTS:
 
         data = json.dumps(data_info)
         ret = requests.post(self.url, headers=headers, data=data, timeout=20)
-        # print("short_tts", text, ret)
+        print("short_tts", text, ret)
         utils.write_file(path + "." + audio_format, ret.content)
 
     def long_tts(self, text, path):

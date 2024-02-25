@@ -23,18 +23,18 @@ class PelbsTTS:
     def txt2audio(self):
 
         self.tts()
-        self.optimize_audio()
+        #self.optimize_audio()
         self.copy_res_word()
 
     def tts(self):
         temp_sound_path = utilsFile.get("temp_sound_path")
         utils.recreate_folder(temp_sound_path)
 
-        osd_en_audio_file = utilsFile.get("osd_en_audio_file")
+        osd_all_audio_file = utilsFile.get("osd_all_audio_file")
         tts_idx_path = utilsFile.get("tts_idx_path")
 
         fdata = open(tts_idx_path, "r+", encoding="utf-8")
-        fpage_txt = open(osd_en_audio_file, 'r', encoding="utf-8")
+        fpage_txt = open(osd_all_audio_file, 'r', encoding="utf-8")
 
         cur_idx = fdata.readline()
         if not cur_idx: cur_idx = 1
@@ -48,16 +48,16 @@ class PelbsTTS:
                 chineseWord = line_content[2]
                 unit_folder = sound_file.split("_")[0]
                 # 生成语音
-                sound_path_en = temp_sound_path + unit_folder + "/" + sound_file + "_en"
-                sound_path_ch = temp_sound_path + unit_folder + "/" + sound_file
+                sound_path_en = temp_sound_path + unit_folder + "/" + sound_file 
+                sound_path_ch = temp_sound_path + unit_folder + "/" + sound_file+ "_cn"
                 utils.mkdir(temp_sound_path + unit_folder)
                 print("txt2audio", sound_path_en)
-                print("txt2audio", sound_path_ch)
+                #print("txt2audio", sound_path_ch)
 
                 speaker_en = configer.program_param("CURRENT_SPEAKER_EN")
-                speaker_ch = configer.program_param("CURRENT_SPEAKER_CH")
+                speaker_ch = configer.program_param("CURRENT_SPEAKER_CN")
                 long_text_speaker_en = configer.program_param("LONG_TEXT_SPEAKER_EN")
-                long_text_speaker_ch = configer.program_param("LONG_TEXT_SPEAKER_CH")
+                long_text_speaker_ch = configer.program_param("LONG_TEXT_SPEAKER_CN")
 
                 altts_en = AlyTTS(speaker_en, long_text_speaker_en)
                 altts_ch = AlyTTS(speaker_ch, long_text_speaker_ch)
@@ -177,12 +177,12 @@ class PelbsTTS:
         # res_sound_path = utilsFile.get("res_sound_path")
         temp_sound_path = utilsFile.get("temp_sound_path")
         dest_sound_path = utilsFile.get("dest_sound_path")
-        dest_sound_en_path = utilsFile.get("dest_sound_en_path")
+        dest_all_sound_path = utilsFile.get("dest_all_sound_path")
         osd_config_path = utilsFile.get("osd_config_path")
         dest_config_path = utilsFile.get("dest_config_path")
 
         utils.delete_folder(dest_sound_path)
-        utils.delete_folder(dest_sound_en_path)
+        utils.delete_folder(dest_all_sound_path)
 
         unitList = os.listdir(temp_sound_path)
         for unit in unitList:
@@ -202,9 +202,9 @@ class PelbsTTS:
                     print("copy word file :", res_sound_file)
                     shutil.copy(res_sound_file, temp_unit_folder)
 
-        utils.mov_files(temp_sound_path, dest_sound_en_path)
-        utils.copy_all_folder(temp_sound_path, dest_sound_path)
-        utils.copy_all_folder(osd_config_path, dest_config_path)
+        #utils.mov_files(temp_sound_path, dest_all_sound_path)
+        utils.copy_all_folder(temp_sound_path, dest_all_sound_path)
+        #utils.copy_all_folder(osd_config_path, dest_config_path)
 
 
 pTTS = PelbsTTS()

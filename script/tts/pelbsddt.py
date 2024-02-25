@@ -32,7 +32,7 @@ class PelbsDDT:
         book_unit_file = utilsFile.get("book_unit_file")
         dest_path = utilsFile.get("dest_path")
         osd_texture_path = utilsFile.get("osd_texture_path")
-        osd_book_unit_file = utilsFile.get("osd_book_unit_file_1")
+        osd_book_unit_file = utilsFile.get("osd_book_unit_file")
 
         osd_sound_path = utilsFile.get("osd_sound_path")
         osd_config_path = utilsFile.get("osd_config_path_1")

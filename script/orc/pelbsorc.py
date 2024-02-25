@@ -21,7 +21,7 @@ class PelbsORC:
     def orc2xls(self, restart = True): #整理上下文
         if restart :
             temp_texture_path = utilsFile.get("temp_texture_path")
-            res_texture_path = utilsFile.get("res_texture_path_1")
+            res_texture_path = utilsFile.get("res_texture_path")
             utils.copy_all_folder(res_texture_path, temp_texture_path)
             pXlsx.create_audio_excel(res_texture_path)      #创建xls文件
 
@@ -32,7 +32,9 @@ class PelbsORC:
             #print("for orc_single_pic", unit_folder)
             ismeta = utils.is_meta(temp_texture_path +  unit_folder)
             if ismeta: continue
-            if re.match("wordslist", unit_folder) or  re.match("review", unit_folder) : continue         #单元不识别
+            unitType =  contentMgr.get_unit_type(unit_folder)
+            #if unitType == "WORD" or unitType == "RECYCLE" : continue         #单词单元不识别
+            if unitType == "WORD" : continue         #单词单元不识别
             fileList = os.listdir(temp_texture_path + unit_folder)
             sortFileList = utils.list_double_sort(fileList, 1)
             self.orc_single_pic(unit_folder, sortFileList)

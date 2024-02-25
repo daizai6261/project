@@ -37,12 +37,7 @@ class AlyTTS:
                              ["BeiHai", "北海"], ["TianShan", "天山"], ["TianChi", "天池"], ["XinJiang", "新疆"],
                              ["Yinchuan", "银川"], ["Nihao", "你好"], ["Luoyang", "洛阳"], ]
 
-    def set_speaker(self):
-        speakerList = configer.program_param("CURRENT_SPEAKER_LIST")
-        speaker_idx = 6
-        while self.speaker != speakerList[speaker_idx]:
-            speaker_idx = random.randint(0, len(speakerList))
-            self.speaker = speakerList[speaker_idx]
+
 
     def tts(self, text, path):
 
@@ -82,7 +77,7 @@ class AlyTTS:
             # "sample_rate":"8000",  #音频采样率，默认是16000
             "volume": "100",  # 音量，范围是0~100，默认50
             "voice": self.speaker,  # 发言人，
-            "speech_rate": "-350",  # 语速，范围是-500~500，默认是0 : lay: -400
+            "speech_rate": "-400",  # 语速，范围是-500~500，默认是0 : lay: -400、aitong: -500
             "pitch_rate": "0",  # 语调，范围是-500~500，默认是0
         }
 

@@ -1,3 +1,4 @@
+import io
 import os
 import math
 import random
@@ -25,6 +26,7 @@ class Utils():
     resFileList = []
 
     def cal_pos_max(self, max_pos_list, pos_list):
+
         lista = max_pos_list.split(",")
         listb = pos_list.split(",")
 
@@ -150,7 +152,7 @@ class Utils():
         return sorted_file
 
     def split_file_name(self, file):
-        print("copy_and_rename file", file)
+        #print("copy_and_rename file", file)
         arr = file.split('_', 2);
         unit_name = arr[0]
         page_name = arr[1]
@@ -820,7 +822,7 @@ class Utils():
                     continue
                 line_contents = line.split("\t")
                 code = line_contents[0]
-                word = line_contents[3][:-1]
+                word = line_contents[2]
                 word_code_dict[word] = code
         f.close()
         return word_code_dict
@@ -1092,7 +1094,7 @@ class Utils():
         except:
             shutil.copy(pic, out_path + "/" + str(pic_name) + ".png")
 
-    def folder_name_change(self, input_index, input_path, new_path):
+    def folder_name_change(self, max_KB, input_path, new_path):
         '''
             图片名称转为数字并压缩
         '''
@@ -1114,8 +1116,180 @@ class Utils():
             count = 0
             for pic in pics:
                 origin_pic = os.path.join(cur_path, pic)
-                self.compress_pic(origin_pic, 200, out_path, count)
+                if self.getKB(origin_pic) > max_KB:
+                    self.compress_pic(origin_pic, 600, out_path, count)
+                else:
+                    shutil.copy(origin_pic, out_path + "/" + str(count) + ".png")
                 count = count + 1
 
+
+    def find_symbol(self, input_path, symbol, out_path):
+        res = ""
+        with open(input_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                index = line.split("\t")[0]
+                if symbol in line:
+                    res = res + "第[" + str(index)  + "]" + "行存在 ; ,请检查\n"
+        f.close()
+        with open(out_path, 'w', encoding='utf-8') as fo:
+            fo.write(res)
+            fo.close()
+
+    def find_duplicate_word(self, path, line_index, word_index, out_path):
+        index = 0
+        word_list = []
+        res = ""
+        with open(path, 'r', encoding='utf-8') as f:
+            for line in f:
+                index = index + 1
+                if index > 2:
+                    number = line.split('\t')[line_index]
+                    word = line.split('\t')[word_index]
+                    if word not in word_list:
+                        word_list.append(word)
+                    else:
+                        res = res + str(number) + '\t' + str(word) + '\t' + str(((int(number) - index) + 1)) + '\n'
+                        print("第【" +  str(number) + "】行的单词【" + word + "】重复了！")
+        with open(out_path, 'w', encoding='utf-8') as fo:
+            fo.write(res)
+            fo.close()
+
+    def move_file(self, input_file, origin_folder):
+        move_file_nums = []
+        with open(input_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                number = line.split("\t")[0]
+                move_file_nums.append(int(number))
+        f.close()
+        index = 0
+        for number in move_file_nums:
+            folders = os.listdir(origin_folder)
+            for folder in folders:
+                origin_folder_index = folder.split("_")[0]
+                origin_folder_name = folder.split("_")[1]
+                if int(origin_folder_index) > int(number) - index:
+                    origin_folder_path = os.path.join(origin_folder, folder)
+                    new_folder_name = str(int(origin_folder_index) - 1) + "_" + origin_folder_name
+                    new_folder_path = os.path.join(origin_folder, new_folder_name)
+                    os.rename(origin_folder_path, new_folder_path)
+
+            index = index + 1
+
+
+    def move_txt(self, input_file, out_filename):
+        move_file_nums = []
+        with open(input_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                number = line.split("\t")[0]
+                move_file_nums.append(int(number))
+        f.close()
+        index = 0
+        for number in move_file_nums:
+            res = ""
+            with open(out_filename + str(index) + ".txt", 'r', encoding='utf-8') as fr:
+                for line in fr:
+                    origin_folder_index = line.split('\t')[0]
+                    if int(origin_folder_index) > int(number) - index:
+                        res = res + str(int(origin_folder_index) - 1) + '\t'\
+                                  + line.split('\t')[1] + '\t' \
+                                  + line.split('\t')[2] + '\t' \
+                                  + line.split('\t')[3] + '\t' \
+                                  + line.split('\t')[4] + '\t' \
+                                  + line.split('\t')[5][:-1] + "\n"
+                    else:
+                        res = res + line
+            fr.close()
+            index = index + 1
+            with open(out_filename + str(index) + ".txt", 'w', encoding='utf-8') as fw:
+                fw.write(res)
+                fw.close()
+
+
+
+    def find(self,  input_path):
+
+        index = 0
+        with open(input_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                number = line.split('\t')[0]
+                word = line.split('\t')[1][:-1]
+                print(str(number) + '\t' + str(word) + '\t' + str((int(number) - index)))
+                index = index + 1
+
+    def clear_duplicate(self, input_file, compare_file, out_file):
+        move_file_line = []
+        with open(input_file, 'r', encoding='utf-8') as f:
+            index = 0
+            for line in f:
+                number = line.split("\t")[0]
+                move_file_line.append({
+                    "num": int(number) - index,
+                    "word": line.split("\t")[1][:-1]
+                })
+                index = index + 1
+        f.close()
+        res = ""
+        with open(compare_file, 'r', encoding='utf-8') as f1:
+            for line in f1:
+                number = line.split('\t')[0]
+                word = line.split('\t')[2]
+                flag = 0
+                for input_file_line in move_file_line:
+                    if int(number) == input_file_line["num"] and word == input_file_line["word"]:
+                        flag = 1
+                        break
+                if flag == 0:
+                    res = res + line
+
+        with open(out_file, 'w', encoding='utf-8') as fw:
+            fw.write(res)
+            fw.close()
+
+
+    def find_lianxu(self, folder, file):
+        folders = os.listdir(folder)
+
+        folder_nums = []
+
+        for f in folders:
+            num = f.split("_")[0]
+            folder_nums.append(int(num))
+
+        folder_nums.sort()
+        index = 0
+        for folder_num in folder_nums:
+            if str(index) != str(folder_num):
+                print("文件夹" + str(folder_num) + "有问题")
+                break
+            index += 1
+        index = 0
+        with open(file, 'r', encoding='utf-8') as f1:
+            for line in f1:
+                num = line.split("\t")[0]
+                if str(index) != str(num):
+                    print("文件的第：" + str(num) + "行有问题")
+                    break
+                index += 1
+
+
+    def add_valid_column(self, input_path, out_put_path):
+        res = "单词Id\t年级\t单词\t中文\t英式音标\t美式音标\t有效\nID\tGrade\tWord\tChinese\tKkSymbol\tIpaSymbol\tValid\n"
+        with open(input_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                new_line = line.split("\t")[0] + '\t'\
+                                  + line.split('\t')[1] + '\t' \
+                                  + line.split('\t')[2] + '\t' \
+                                  + line.split('\t')[3] + '\t' \
+                                  + line.split('\t')[4] + '\t' \
+                                  + line.split('\t')[5][:-1] + '\t' \
+                                  + "1" + '\n'
+                res += new_line
+        f.close()
+        with open(out_put_path, 'w', encoding='utf-8') as fo:
+            fo.write(res)
+            fo.close()
+
+    def getKB(self, img_url):
+        return os.path.getsize(img_url) / 1e3
 
 utils = Utils()
