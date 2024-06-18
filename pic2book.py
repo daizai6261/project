@@ -120,7 +120,7 @@ if __name__ == '__main__':
         clear_dest_folder()
 
         ####### 图片转xls
-        #pORC.orc2xls(True)
+        pORC.orc2xls(True)
         print("识别完毕")
 
         ####### xls转txt
@@ -141,6 +141,12 @@ if __name__ == '__main__':
 
         ####### txt合成音频
         #txt2audio()
+
+        #合成讲解音频
+
+        #合成单元导学音频
+
+
         print("合成完毕")
 
 

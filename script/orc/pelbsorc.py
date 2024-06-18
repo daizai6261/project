@@ -19,6 +19,9 @@ from script.contentmgr import contentMgr
 class PelbsORC:
 
     def orc2xls(self, restart = True): #整理上下文
+
+
+
         if restart :
             temp_texture_path = utilsFile.get("temp_texture_path")
             res_texture_path = utilsFile.get("res_texture_path")
