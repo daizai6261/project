@@ -56,6 +56,7 @@ def word_create():
                 print("txt2audio", sound_path)
                 alyTTSApi.tts(englishWord, sound_path)
 
+
 def word_valid():
     is_valid = True
     # work_path = "D:/Workship/Pelbs/Gen/"
@@ -95,8 +96,8 @@ def word_valid():
                             res, n = re.subn(r"[^a-zA-Z’]+", "", w)
                             [UK_temp, US_temp] = utils.getPhonetic(res)
                         except:
-                            msg += "检查【" +file + "】第" + str(num + 1) + "行单词拼写是否出错\n"
-                            print("检查【" +file + "】第" + str(num + 1) + "行单词拼写是否出错")
+                            msg += "检查【" + file + "】第" + str(num + 1) + "行单词拼写是否出错\n"
+                            print("检查【" + file + "】第" + str(num + 1) + "行单词拼写是否出错")
                             is_valid = False
                             break
         if msg != "":
@@ -108,8 +109,8 @@ def word_valid():
                 f.write(msg)
     return is_valid
 
+
 if __name__ == '__main__':
     # 单词音频生成
     if word_valid():
         word_create()
-

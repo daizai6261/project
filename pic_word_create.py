@@ -1,6 +1,7 @@
 from script.utils.WordUtil import wordUtil
 from script.utils.utils import utils
 from script.base.configer import configer
+
 if __name__ == '__main__':
     PROJECT_PATH = configer.run_param("PROJECT_PATH")
     # 调用方法
@@ -9,4 +10,6 @@ if __name__ == '__main__':
     # 读取result.txt中去重后的单词
     # utils.getImgByWord(PROJECT_PATH + "dest/pic_word/result-小学英语.txt", 5, " 卡通图像",   PROJECT_PATH + "dest/pic_word/小学英语/")
 
-    utils.run_get_google_pic("D:\software\Google\Chrome\Application\chromedriver.exe", PROJECT_PATH + "dest/pic_word/result.txt", "cartoon image", 5, 5, PROJECT_PATH + "dest/pic_word/小学英语/")
+    utils.run_get_google_pic("D:\software\Google\Chrome\Application\chromedriver.exe",
+                             PROJECT_PATH + "dest/pic_word/result.txt", "cartoon image", 5, 5,
+                             PROJECT_PATH + "dest/pic_word/小学英语/")
