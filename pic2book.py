@@ -120,7 +120,7 @@ if __name__ == '__main__':
         clear_dest_folder()
 
         ####### 图片转xls
-        pORC.orc2xls(True)
+        #pORC.orc2xls(True)
         print("识别完毕")
 
         ####### xls转txt
