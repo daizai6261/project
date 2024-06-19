@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE tmx SYSTEM "tmx14.dtd">
+<tmx version="1.4">
+  <header segtype="sentence" o-tmf="UTF-8"
+  adminlang="en" srclang="en-US"  datatype="PlainText"/>
+  <body>
+    <tu>
+      <tuv xml:lang="en">
+        <seg>Have some eggs. Have some juice. Eat some bread. Drink some milk.</seg>
+      </tuv>
+      <tuv xml:lang="zh-CN">
+        <seg>吃些鸡蛋。喝些果汁。吃些面包。喝些牛奶。</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en">
+        <seg>Let's have some cake today. Let's have some cake today. Let's have some cake today, on such a lovely day. Let's have some milk today. Let's have some milk today. Let's have some milk today, on such a lovely day.</seg>
+      </tuv>
+      <tuv xml:lang="zh-CN">
+        <seg>让我们今天吃些蛋糕吧。让我们今天吃些蛋糕吧。让我们今天吃些蛋糕吧，在这样美好的一天。让我们今天喝些牛奶吧。让我们今天喝些牛奶吧。让我们今天喝些牛奶吧，在这样美好的一天。</seg>
+      </tuv>
+    </tu>
+  </body>
+</tmx>
