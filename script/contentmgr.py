@@ -15,10 +15,10 @@ class ContentMgr:
             return "EXPRESSION"
         elif re.match("recycle", strs) or re.match("revision", strs) or re.match("review", strs) : 
             return "RECYCLE"
-        elif re.match("unit", strs) or re.match("starter unit", strs) or re.match("module", strs) or re.match("project", strs) or re.match("learning", strs) or re.match("alphabet", strs)or re.match("assessment1", strs) or re.match("bonus", strs) or re.match("appendices", strs) or re.match("grammar", strs)  or re.match("tapescripts", strs) or re.match("pronunciation", strs) or re.match("notes", strs) or re.match("additional", strs) or re.match("irregular verbs", strs) or re.match("supplementary", strs) or re.match("starterunit", strs)  : 
+        elif re.match("unit", strs) or re.match("starter unit", strs) or re.match("module", strs) or re.match("project", strs) or re.match("learning", strs) or re.match("alphabet", strs)or re.match("assessment1", strs) or re.match("bonus", strs) or re.match("appendices", strs) or re.match("grammar", strs)  or re.match("tapescripts", strs) or re.match("pronunciation", strs) or re.match("notes", strs) or re.match("additional", strs) or re.match("irregular verbs", strs) or re.match("supplementary", strs) or re.match("starterunit", strs)  :
             return "LESSON"
         else:
-            return None
+            return ""
 
     def get_english_format_type(self, strs):
         if re.match("WORD", strs) or re.match("EXPRESSION", strs) :
