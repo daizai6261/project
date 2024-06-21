@@ -59,8 +59,9 @@ def gen_explain_audio_from_folder(folder, out_put_folder):
 
 
 def gen_explain_audio_from_folder_and_file(folder, file, out_put_folder):
+    pass
 
-if __name__ == '__main__':
+if __name__ =='__main__':
     PROJECT_PATH = configer.run_param("PROJECT_PATH")
     VIDEO_PATH = PROJECT_PATH + "dest/video/"
     print('输出路径为：', VIDEO_PATH)
