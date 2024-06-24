@@ -10,4 +10,3 @@
 # root_df = pd.read_excel(config.book_id_path)
 
 # print(root_df)
-

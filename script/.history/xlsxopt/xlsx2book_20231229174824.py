@@ -44,7 +44,7 @@ if os.path.exists(error_book_output_path):
 class Xlsx2Book:
 
     def excel2txt(self, index, id_):
-        
+
         # 创建config、texture文件夹
         [config_path, texture_path] = self.remake_dir(series_list[index], id_)
         pXlsx.xls2txt(True, True)
@@ -68,7 +68,6 @@ class Xlsx2Book:
         english_audio_file = utils.resFileList[0]
         shutil.copy(english_audio_file, config_path + "EnglishAudio_" + str(book_id) + ".txt")
         utils.resFileList = []
-
 
     def pdf_to_img(self, pdf_path, temp_texture_path_raw, split, start_num, book_id):
         # 先清空

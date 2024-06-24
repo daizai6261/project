@@ -23,7 +23,7 @@ class PelbsTTS:
     def txt2audio(self):
 
         self.tts()
-        #self.optimize_audio()
+        # self.optimize_audio()
         self.copy_res_word()
 
     def tts(self):
@@ -48,11 +48,11 @@ class PelbsTTS:
                 chineseWord = line_content[2]
                 unit_folder = sound_file.split("_")[0]
                 # 生成语音
-                sound_path_en = temp_sound_path + unit_folder + "/" + sound_file 
-                sound_path_ch = temp_sound_path + unit_folder + "/" + sound_file+ "_cn"
+                sound_path_en = temp_sound_path + unit_folder + "/" + sound_file
+                sound_path_ch = temp_sound_path + unit_folder + "/" + sound_file + "_cn"
                 utils.mkdir(temp_sound_path + unit_folder)
                 print("txt2audio", sound_path_en)
-                #print("txt2audio", sound_path_ch)
+                # print("txt2audio", sound_path_ch)
 
                 speaker_en = configer.program_param("CURRENT_SPEAKER_EN")
                 speaker_ch = configer.program_param("CURRENT_SPEAKER_CN")
@@ -204,7 +204,7 @@ class PelbsTTS:
 
         utils.mov_files(temp_sound_path, dest_all_sound_path)
         utils.copy_all_folder(temp_sound_path, dest_sound_path)
-        #utils.copy_all_folder(osd_config_path, dest_config_path)
+        # utils.copy_all_folder(osd_config_path, dest_config_path)
 
 
 pTTS = PelbsTTS()

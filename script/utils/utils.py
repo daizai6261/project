@@ -152,7 +152,7 @@ class Utils():
         return sorted_file
 
     def split_file_name(self, file):
-        #print("copy_and_rename file", file)
+        # print("copy_and_rename file", file)
         arr = file.split('_', 2);
         unit_name = arr[0]
         page_name = arr[1]
@@ -1122,14 +1122,13 @@ class Utils():
                     shutil.copy(origin_pic, out_path + "/" + str(count) + ".png")
                 count = count + 1
 
-
     def find_symbol(self, input_path, symbol, out_path):
         res = ""
         with open(input_path, 'r', encoding='utf-8') as f:
             for line in f:
                 index = line.split("\t")[0]
                 if symbol in line:
-                    res = res + "第[" + str(index)  + "]" + "行存在 ; ,请检查\n"
+                    res = res + "第[" + str(index) + "]" + "行存在 ; ,请检查\n"
         f.close()
         with open(out_path, 'w', encoding='utf-8') as fo:
             fo.write(res)
@@ -1149,7 +1148,7 @@ class Utils():
                         word_list.append(word)
                     else:
                         res = res + str(number) + '\t' + str(word) + '\t' + str(((int(number) - index) + 1)) + '\n'
-                        print("第【" +  str(number) + "】行的单词【" + word + "】重复了！")
+                        print("第【" + str(number) + "】行的单词【" + word + "】重复了！")
         with open(out_path, 'w', encoding='utf-8') as fo:
             fo.write(res)
             fo.close()
@@ -1175,7 +1174,6 @@ class Utils():
 
             index = index + 1
 
-
     def move_txt(self, input_file, out_filename):
         move_file_nums = []
         with open(input_file, 'r', encoding='utf-8') as f:
@@ -1190,12 +1188,12 @@ class Utils():
                 for line in fr:
                     origin_folder_index = line.split('\t')[0]
                     if int(origin_folder_index) > int(number) - index:
-                        res = res + str(int(origin_folder_index) - 1) + '\t'\
-                                  + line.split('\t')[1] + '\t' \
-                                  + line.split('\t')[2] + '\t' \
-                                  + line.split('\t')[3] + '\t' \
-                                  + line.split('\t')[4] + '\t' \
-                                  + line.split('\t')[5][:-1] + "\n"
+                        res = res + str(int(origin_folder_index) - 1) + '\t' \
+                              + line.split('\t')[1] + '\t' \
+                              + line.split('\t')[2] + '\t' \
+                              + line.split('\t')[3] + '\t' \
+                              + line.split('\t')[4] + '\t' \
+                              + line.split('\t')[5][:-1] + "\n"
                     else:
                         res = res + line
             fr.close()
@@ -1204,9 +1202,7 @@ class Utils():
                 fw.write(res)
                 fw.close()
 
-
-
-    def find(self,  input_path):
+    def find(self, input_path):
 
         index = 0
         with open(input_path, 'r', encoding='utf-8') as f:
@@ -1245,7 +1241,6 @@ class Utils():
             fw.write(res)
             fw.close()
 
-
     def find_lianxu(self, folder, file):
         folders = os.listdir(folder)
 
@@ -1271,18 +1266,17 @@ class Utils():
                     break
                 index += 1
 
-
     def add_valid_column(self, input_path, out_put_path):
         res = "单词Id\t年级\t单词\t中文\t英式音标\t美式音标\t有效\nID\tGrade\tWord\tChinese\tKkSymbol\tIpaSymbol\tValid\n"
         with open(input_path, 'r', encoding='utf-8') as f:
             for line in f:
-                new_line = line.split("\t")[0] + '\t'\
-                                  + line.split('\t')[1] + '\t' \
-                                  + line.split('\t')[2] + '\t' \
-                                  + line.split('\t')[3] + '\t' \
-                                  + line.split('\t')[4] + '\t' \
-                                  + line.split('\t')[5][:-1] + '\t' \
-                                  + "1" + '\n'
+                new_line = line.split("\t")[0] + '\t' \
+                           + line.split('\t')[1] + '\t' \
+                           + line.split('\t')[2] + '\t' \
+                           + line.split('\t')[3] + '\t' \
+                           + line.split('\t')[4] + '\t' \
+                           + line.split('\t')[5][:-1] + '\t' \
+                           + "1" + '\n'
                 res += new_line
         f.close()
         with open(out_put_path, 'w', encoding='utf-8') as fo:
@@ -1291,5 +1285,6 @@ class Utils():
 
     def getKB(self, img_url):
         return os.path.getsize(img_url) / 1e3
+
 
 utils = Utils()

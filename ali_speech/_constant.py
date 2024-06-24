@@ -87,4 +87,3 @@ class Constant:
     HEADER_VALUE_TTS_NAMESPACE = 'SpeechSynthesizer'
     HEADER_VALUE_TTS_NAME_START = 'StartSynthesis'
     HEADER_VALUE_TTS_NAME_COMPLETED = 'SynthesisCompleted'
-

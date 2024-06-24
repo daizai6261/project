@@ -31,4 +31,5 @@ def create_audio(file, out_put_path):
 if __name__ == '__main__':
     PROJECT_PATH = configer.run_param("PROJECT_PATH")
     VIDEO_PATH = PROJECT_PATH + "dest/video/"
-    create_audio("D:/software/WeChat/datas/WeChat Files/wxid_78zus7tutfn122/FileStorage/File/2023-01/单次音频.txt", VIDEO_PATH)
+    create_audio("D:/software/WeChat/datas/WeChat Files/wxid_78zus7tutfn122/FileStorage/File/2023-01/单次音频.txt",
+                 VIDEO_PATH)

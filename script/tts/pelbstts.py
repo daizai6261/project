@@ -23,12 +23,11 @@ class PelbsTTS:
     def txt2audio(self):
 
         self.tts()
-        #self.optimize_audio()
-
+        # self.optimize_audio()
 
     def tts(self):
         temp_sound_path = utilsFile.get("temp_sound_path")
-       # utils.recreate_folder(temp_sound_path)
+        # utils.recreate_folder(temp_sound_path)
 
         dest_all_audio_file = utilsFile.get("dest_all_audio_file")
         tts_idx_path = utilsFile.get("tts_idx_path")
@@ -157,8 +156,6 @@ class PelbsTTS:
 
         os.remove(path1)
         output_music.export(path1, format="mp3")  # 前面是保存路径，后面是保存格式
-
-
 
 
 pTTS = PelbsTTS()
