@@ -24,6 +24,7 @@ class SpeechRecognizerCallback:
     * @param message 服务返回的响应
     * @return
     """
+
     def on_started(self, message):
         raise Exception('Not implemented!')
 
@@ -33,6 +34,7 @@ class SpeechRecognizerCallback:
     * @param message 服务返回的响应
     * @return
     """
+
     def on_result_changed(self, message):
         raise Exception('Not implemented!')
 
@@ -43,6 +45,7 @@ class SpeechRecognizerCallback:
     * @param message 服务返回的响应
     * @return
     """
+
     def on_completed(self, message):
         raise Exception('Not implemented!')
 
@@ -53,6 +56,7 @@ class SpeechRecognizerCallback:
     * @param message 服务返回的响应
     * @return
     """
+
     def on_task_failed(self, message):
         raise Exception('Not implemented!')
 
@@ -61,6 +65,7 @@ class SpeechRecognizerCallback:
     * @note 请勿在回调函数内部调用stop()操作
     * @return
     """
+
     def on_channel_closed(self):
         raise Exception('Not implemented!')
 
@@ -72,6 +77,7 @@ class SpeechTranscriberCallback:
     * @param message 服务返回的响应
     * @return
     """
+
     def on_started(self, message):
         raise Exception('Not implemented!')
 
@@ -81,6 +87,7 @@ class SpeechTranscriberCallback:
     * @param message 服务返回的响应
     * @return
     """
+
     def on_result_changed(self, message):
         raise Exception('Not implemented!')
 
@@ -90,6 +97,7 @@ class SpeechTranscriberCallback:
     * @param message 服务返回的响应
     * @return
     """
+
     def on_sentence_begin(self, message):
         raise Exception('Not implemented!')
 
@@ -99,6 +107,7 @@ class SpeechTranscriberCallback:
         * @param message 服务返回的响应
         * @return
         """
+
     def on_sentence_end(self, message):
         raise Exception('Not implemented!')
 
@@ -109,6 +118,7 @@ class SpeechTranscriberCallback:
     * @param message 服务返回的响应
     * @return
     """
+
     def on_completed(self, message):
         raise Exception('Not implemented!')
 
@@ -119,6 +129,7 @@ class SpeechTranscriberCallback:
     * @param message 服务返回的响应
     * @return
     """
+
     def on_task_failed(self, message):
         raise Exception('Not implemented!')
 
@@ -127,6 +138,7 @@ class SpeechTranscriberCallback:
     * @note 请勿在回调函数内部调用stop()操作
     * @return
     """
+
     def on_channel_closed(self):
         raise Exception('Not implemented!')
 
@@ -143,6 +155,7 @@ class SpeechSynthesizerCallback:
     * @param message 服务返回的响应
     * @return
     """
+
     def on_completed(self, message):
         raise Exception('Not implemented!')
 
@@ -153,6 +166,7 @@ class SpeechSynthesizerCallback:
     * @param message 服务返回的响应
     * @return
     """
+
     def on_task_failed(self, message):
         raise Exception('Not implemented!')
 
@@ -161,5 +175,6 @@ class SpeechSynthesizerCallback:
     * @note 请勿在回调函数内部调用stop()操作
     * @return
     """
+
     def on_channel_closed(self):
         raise Exception('Not implemented!')

@@ -1,6 +1,7 @@
 from script.utils.WordUtil import wordUtil
 from script.utils.utils import utils
 from script.base.configer import configer
+
 if __name__ == '__main__':
     PROJECT_PATH = configer.run_param("PROJECT_PATH")
     # 调用方法
@@ -31,7 +32,8 @@ if __name__ == '__main__':
     # utils.folder_rename("D:/Workship/Pelbs/Gen/dest/pic_word/小学英语-合并", "orkship/Pelbs/Gen/dest/pic_word/小学英语-合并-最终版本")
 
     # 图片文件夹重命名+压缩
-    utils.folder_name_change(100, "C:/Users/40198/Desktop/小学英语-合并/小学英语-整理后-去重/", "C:/Users/40198/Desktop/小学英语-合并/小学英语-final/")
+    utils.folder_name_change(100, "C:/Users/40198/Desktop/小学英语-合并/小学英语-整理后-去重/",
+                             "C:/Users/40198/Desktop/小学英语-合并/小学英语-final/")
 
     # utils.find_symbol("D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail.txt", ";", "D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail-修订.txt")
 
@@ -45,7 +47,6 @@ if __name__ == '__main__':
     # utils.move_txt("D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail-重复.txt", "D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/test/WordDetail")
 
     # utils.clear_duplicate("D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail-重复.txt", "D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/test/WordDetail49.txt", "D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/test/WordDetail_res.txt")
-
 
     # 增加一列有效无效
     # utils.add_valid_column("D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail_res.txt", "D:/Workship/Pelbs/Gen/dest/pic_word/追加音标結果/WordDetail_res1.txt")

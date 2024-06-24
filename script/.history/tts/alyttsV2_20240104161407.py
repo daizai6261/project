@@ -37,7 +37,6 @@ class AlyTTS:
                              ["BeiHai", "北海"], ["TianShan", "天山"], ["TianChi", "天池"], ["XinJiang", "新疆"],
                              ["Yinchuan", "银川"], ["Nihao", "你好"], ["Luoyang", "洛阳"], ]
 
-
     def tts(self, text, path):
 
         text = self.optimize_time_sound(text)
@@ -58,7 +57,7 @@ class AlyTTS:
         if len(text) < 250:
             self.short_tts(text, path)
         else:
-            
+
             self.long_tts(text, path)
 
     def short_tts(self, text, path):
@@ -280,5 +279,3 @@ class TtsBody:
     def tojson(self, e):
         return {'header': e.tts_header.tojson(e.tts_header), 'context': e.tts_context.tojson(e.tts_context),
                 'payload': e.tts_payload.tojson(e.tts_payload)}
-
-

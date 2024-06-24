@@ -6,6 +6,7 @@ from script.tts.alytts import alyTTSApi
 from script.base.configer import configer
 import shutil
 
+
 def sentence_create():
     # work_path = "D:/Workship/Pelbs/Gen/"
     work_path = configer.run_param("PROJECT_PATH")
@@ -98,7 +99,8 @@ def sentence_valid():
                 f.write(msg)
     return is_valid
 
+
 if __name__ == '__main__':
     # 单词音频生成
-    if(sentence_valid()):
+    if (sentence_valid()):
         sentence_create()

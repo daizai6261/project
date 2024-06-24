@@ -36,8 +36,8 @@ def word_create():
         if not os.path.exists(osd_configs_path):
             # 如果目标路径不存在原文件夹的话就创建
             os.makedirs(osd_configs_path)
-        #if not utils.genPhonetics(file_path, osd_configs_path + file):
-            #return
+        # if not utils.genPhonetics(file_path, osd_configs_path + file):
+        # return
         shutil.copy(file_path, osd_configs_path)
 
         if not cur_idx: cur_idx = 1
@@ -50,7 +50,7 @@ def word_create():
                 words = line.split("\t")
                 sound_file = words[0]
                 englishWord = words[1]
-                #过滤 *
+                # 过滤 *
                 englishWord = englishWord.replace('*', '')
                 unit_folder = sound_file.split("_")[0]
                 # 生成语音
@@ -58,6 +58,7 @@ def word_create():
                 utils.mkdir(osd_sound_path + unit_folder)
                 print("txt2audio", sound_path)
                 alyTTSApi.tts(englishWord, sound_path)
+
 
 def word_valid():
     is_valid = True
@@ -83,7 +84,7 @@ def word_valid():
         msg = ""
         tabNum = 4
         for num, line in enumerate(file_content):
-            if num == 1:    #第一行定义tab个数
+            if num == 1:  # 第一行定义tab个数
                 fieldName = line.split("\t")
                 tabNum = len(fieldName)
             if len(line) == 0 or line == "\n":
@@ -99,10 +100,10 @@ def word_valid():
                     for w in words[1].split(" "):
                         try:
                             res, n = re.subn(r"[^a-zA-Z’]+", "", w)
-                           # [UK_temp, US_temp] = utils.getPhonetic(res)
+                        # [UK_temp, US_temp] = utils.getPhonetic(res)
                         except:
-                            msg += "检查【" +file + "】第" + str(num + 1) + "行单词拼写是否出错\n"
-                            print("检查【" +file + "】第" + str(num + 1) + "行单词拼写是否出错")
+                            msg += "检查【" + file + "】第" + str(num + 1) + "行单词拼写是否出错\n"
+                            print("检查【" + file + "】第" + str(num + 1) + "行单词拼写是否出错")
                             is_valid = False
                             break
         if msg != "":
@@ -113,6 +114,7 @@ def word_valid():
             with open(result_file, "w", encoding="utf-8") as f:
                 f.write(msg)
     return is_valid
+
 
 def word_config_create():
     PROJECT_PATH = configer.run_param("PROJECT_PATH")
@@ -191,7 +193,8 @@ def word_config_create():
                     if word_code_dict.get(word):
                         pic_code = word_code_dict.get(word)
                     # new_line = line[: -1] + "\t" + US[:-1] + '\t' + UK[:-1] + '\t' + pic_code + '\n'
-                    new_line = line_contents[0] + '\t' + line_contents[1] + '\t' + line_contents[2] + '\t' + pic_code + '\n'
+                    new_line = line_contents[0] + '\t' + line_contents[1] + '\t' + line_contents[
+                        2] + '\t' + pic_code + '\n'
             file_data += new_line
             count += 1
         if msg != "" and flag == 0:

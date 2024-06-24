@@ -7,11 +7,12 @@ from script.base.configer import configer
 from script.orc.pelbsorc import pORC
 from script.utils.utils import utils
 from script.utils.utilsfile import utilsFile
-from script.xlsxopt.xlsx2book import  xlsx2Book
-#from script.tts.pelbstts import pTTS
+from script.xlsxopt.xlsx2book import xlsx2Book
+# from script.tts.pelbstts import pTTS
 from script.tts.pelbsttsV2 import pTTS
 
 from script.xlsxopt.pxlsx import pXlsx
+
 # -------------------------------------------------main---------------------------------------------
 
 '''
@@ -34,7 +35,6 @@ series_list = list(map(int, series))
 book_names = data_sheet1.col_values(1)[1:]
 book_name_list = list(map(str, book_names))
 
-
 # 卡通化模型位置
 # anime_checkPoint_dir = "D:/Workship/Pelbs/Gen/project/AnimeGAN/checkpoint/AnimeGAN_Hayao_lsgan_300_300_1_3_10"
 anime_checkPoint_dir = configer.run_param("ANIMEGAN_CHECKPOINT_PATH")
@@ -44,37 +44,40 @@ error_book_output_path = error_output_path + "book/"
 if os.path.exists(error_book_output_path):
     utils.del_file(error_book_output_path)
 
-def pic_to_excel(index, id_):
-    #copy_org_dir()
-    pORC.orc2xls(True)
-    print("识别完毕")   
 
- # 复制config、texture文件夹用来生成
+def pic_to_excel(index, id_):
+    # copy_org_dir()
+    pORC.orc2xls(True)
+    print("识别完毕")
+
+    # 复制config、texture文件夹用来生成
+
+
 def copy_org_dir():
     book_unit_file = utilsFile.get("book_unit_file")
     res_texture_path = utilsFile.get("res_texture_path")
-  
+
     utils.delete_folder(res_texture_path)
-  
-    
+
     utils.mkdir(res_texture_path)
-    #utils.copy_files(id_, book_unit_file)
-    
+    # utils.copy_files(id_, book_unit_file)
+
 
 def txt2audio():
-   # if book_valid():
+    # if book_valid():
     #    print("配置文件错误")
-    #else:
-        # 合成音频
-        pTTS.txt2audio()  # 音频生成
-        # # # #合成图片
-        # # # # #
-        # anime_test_dir = utilsFile.get("res_texture_path")
-        # anime_result_dir = utilsFile.get("dest_texture_path")
-        # gen(anime_checkPoint_dir, anime_result_dir, anime_test_dir)
-        #
-        # # # 不进行风格迁移，直接拷贝图片
-        # utils.copy_all_folder(anime_test_dir, anime_result_dir)
+    # else:
+    # 合成音频
+    pTTS.txt2audio()  # 音频生成
+    # # # #合成图片
+    # # # # #
+    # anime_test_dir = utilsFile.get("res_texture_path")
+    # anime_result_dir = utilsFile.get("dest_texture_path")
+    # gen(anime_checkPoint_dir, anime_result_dir, anime_test_dir)
+    #
+    # # # 不进行风格迁移，直接拷贝图片
+    # utils.copy_all_folder(anime_test_dir, anime_result_dir)
+
 
 def book_valid():
     is_valid = True
@@ -89,7 +92,8 @@ def book_valid():
         is_valid = False
     return is_valid
 
- #创建目标文件夹
+
+# 创建目标文件夹
 def clear_dest_folder():
     # 创建目标文件夹
     dest_config_path = utilsFile.get("dest_config_path")
@@ -97,6 +101,7 @@ def clear_dest_folder():
 
     utils.recreate_folder(dest_config_path)
     utils.recreate_folder(dest_all_sound_path)
+
 
 def copy_dest_folder():
     temp_sound_path = utilsFile.get("temp_sound_path")
@@ -113,10 +118,11 @@ def copy_dest_folder():
     shutil.copy(temp_audio_file, dest_en_audio_file)
     os.rename(dest_en_audio_file, dest_all_audio_file)
 
+
 if __name__ == '__main__':
     for index, bookIdx in enumerate(book_idx_list):
         utilsFile.set_book_idx(index, bookIdx)
-        print("开始处理book",  bookIdx)
+        print("开始处理book", bookIdx)
         clear_dest_folder()
 
         ####### 图片转xls
@@ -124,11 +130,11 @@ if __name__ == '__main__':
         print("识别完毕")
 
         ####### xls转txt
-        pXlsx.xls2txt(False, True)  #第一个是否翻译
+        pXlsx.xls2txt(False, True)  # 第一个是否翻译
         print("位置转换完毕")
 
         ####### 翻译
-        #pXlsx.xls2txt(True, True)  #第一个是否翻译
+        # pXlsx.xls2txt(True, True)  #第一个是否翻译
         print("翻译完毕")
 
         #########合并成最终文件夹
@@ -138,17 +144,10 @@ if __name__ == '__main__':
         # #json转txt
         # pXlsx.json2txt()
 
-
         ####### txt合成音频
-        #txt2audio()
+        # txt2audio()
 
-        #合成讲解音频
+        # 合成讲解音频
         #
 
-
         print("合成完毕")
-
-
-
-
-

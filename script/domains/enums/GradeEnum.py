@@ -21,6 +21,3 @@ class GradeEnum(Enum):
     EIGHT_GRADE_DOWN = ["八年级下册", 82]
     NINE_GRADE_UP = ["九年级上册", 91]
     NINE_GRADE_DOWN = ["九年级下册", 92]
-
-
-
