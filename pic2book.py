@@ -158,25 +158,26 @@ if __name__ == '__main__':
         print("识别完毕")
 
         ####### xls转txt
-        pXlsx.xls2txt(False, True)  # 第一个是否翻译
+        #pXlsx.xls2txt(False, True)  # 第一个是否翻译
         print("位置转换完毕")
 
         ####### 翻译
-        pXlsx.xls2txt(True, True)  # 第一个是否翻译
+        #pXlsx.xls2txt(True, True)  # 第一个是否翻译
         print("翻译完毕")
 
         #########合并成最终文件夹
-        copy_dest_folder()
+        #copy_dest_folder()
         print("合并完毕")
 
         # #json转txt
         # pXlsx.json2txt()
 
         ####### txt合成音频
-        # txt2audio()
+        txt2audio()
 
         # 合成讲解音频
-        gen_explain_audio()
+        print("开始生成讲解音频")
+        #gen_explain_audio()
 
         # 合成单元导学音频
 
