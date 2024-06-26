@@ -189,7 +189,7 @@ def add_prefix_by_postfix(prefix: str, postfix: str, folder_path: str):
                 print(f"重命名 '{filename}' 为 '{new_filename}'")
 
 # Example usage:
-add_prefix_by_postfix('explain_', '.mp3', '/path/to/folder')
+# add_prefix_by_postfix('explain_', '.mp3', '/path/to/folder')
 
 
 if __name__ == '__main__':
