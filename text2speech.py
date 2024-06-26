@@ -10,6 +10,7 @@ import os
 from script.base.configer import configer
 from script.tts.alyttsV2 import AlyTTS
 from script.utils.utils import utils
+import shutil
 
 
 def get_file_from_folder(folder_path):
@@ -141,7 +142,15 @@ def explain_text_to_audio(txt_file_path, out_put_path, start_line=1, file_name_i
     if not os.path.exists(out_put_path):
         os.makedirs(out_put_path)
     else:
-        raise ValueError(f"输出目标文件夹 {out_put_path} 已存在，请检查")
+        for filename in os.listdir(out_put_path):
+            file_path = os.path.join(out_put_path, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+            except Exception as e:
+                raise ValueError(f"删除文件 {file_path} 失败: {e}")
 
     base_name = os.path.splitext(os.path.basename(txt_file_path))[0]
     sub_dir_path = os.path.join(out_put_path, base_name)
