@@ -114,10 +114,10 @@ def txt_to_speech(txt_file_path, out_put_path, start_line=1, file_name_index=0, 
     else:
         raise ValueError(f"输出目标文件夹 {out_put_path} 已存在，请检查")
 
-    # base_name = os.path.splitext(os.path.basename(txt_file_path))[0]
-    # sub_dir_path = os.path.join(out_put_path, base_name)
-    # if not os.path.exists(sub_dir_path):
-    #     utils.mkdir(sub_dir_path)
+    base_name = os.path.splitext(os.path.basename(txt_file_path))[0]
+    sub_dir_path = os.path.join(out_put_path, base_name)
+    if not os.path.exists(sub_dir_path):
+        utils.mkdir(sub_dir_path)
 
     lines = read_file(txt_file_path, start_line)
     for line in lines:
@@ -128,8 +128,46 @@ def txt_to_speech(txt_file_path, out_put_path, start_line=1, file_name_index=0, 
             print(f"Skipping line due to error: {e}")
 
 
+def explain_text_to_audio(txt_file_path, out_put_path, start_line=1, file_name_index=0, word_contents_ranges=None):
+    """将单个解释txt文件的内容转换为音频并保存到指定的文件夹中
+    :param txt_file_path: 单个txt文件路径
+    :param out_put_path: 输出文件夹路径
+    :param start_line: 从第几行开始读取内容，从1开始
+    :param file_name_index: 文件名字段的下标，从0开始
+    :param word_contents_ranges: 需要生成音频的字段下标范围，从0开始
+    """
+    if word_contents_ranges is None:
+        word_contents_ranges = [(1,)]
+    if not os.path.exists(out_put_path):
+        os.makedirs(out_put_path)
+    else:
+        raise ValueError(f"输出目标文件夹 {out_put_path} 已存在，请检查")
+
+    base_name = os.path.splitext(os.path.basename(txt_file_path))[0]
+    sub_dir_path = os.path.join(out_put_path, base_name)
+    if not os.path.exists(sub_dir_path):
+        os.makedirs(sub_dir_path)
+
+    lines = read_file(txt_file_path, start_line)
+    for line in lines:
+        try:
+            file_name, word_contents = get_text_needed(line, file_name_index, word_contents_ranges)
+            unit_number = file_name.split('_')[0]
+            unit_dir_path = os.path.join(str(sub_dir_path), unit_number)
+            if not os.path.exists(unit_dir_path):
+                os.makedirs(unit_dir_path)
+
+            audio_file_name = '_'.join(file_name.split('_')[1:])
+
+            call_api(word_contents, unit_dir_path, audio_file_name)
+            print(f"生成音频文件 '{audio_file_name}' 并保存到 '{unit_dir_path}'")
+
+        except ValueError as e:
+            print(f"Skipping line due to error: {e}")
+
+
 def add_prefix_by_postfix(prefix: str, postfix: str, folder_path: str):
-    """根据后缀名为文件夹中的文件命名添加前缀名
+    """根据后缀名为文件夹中的文件命名添加前缀名（递归处理子文件夹）
     Params:
         prefix: 需要添加的前缀
         postfix: 需要添加前缀的文件的后缀名，如：.mp3
@@ -141,13 +179,17 @@ def add_prefix_by_postfix(prefix: str, postfix: str, folder_path: str):
         print(f"文件夹路径 '{folder_path}' 不存在，无法为文件名添加前缀")
         return
 
-    for filename in os.listdir(folder_path):
-        if filename.endswith(postfix):
-            new_filename = prefix + filename
-            old_file_path = os.path.join(folder_path, filename)
-            new_file_path = os.path.join(folder_path, new_filename)
-            os.rename(old_file_path, new_file_path)
-            print(f"重命名 '{filename}' 为 '{new_filename}'")
+    for root, _, files in os.walk(folder_path):
+        for filename in files:
+            if filename.endswith(postfix):
+                old_file_path = os.path.join(root, filename)
+                new_filename = prefix + filename
+                new_file_path = os.path.join(root, new_filename)
+                os.rename(old_file_path, new_file_path)
+                print(f"重命名 '{filename}' 为 '{new_filename}'")
+
+# Example usage:
+add_prefix_by_postfix('explain_', '.mp3', '/path/to/folder')
 
 
 if __name__ == '__main__':
