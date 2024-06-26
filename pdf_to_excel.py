@@ -37,7 +37,6 @@ start_num_list = list(map(int, start_nums))
 book_names = data_sheet1.col_values(1)[1:]
 book_name_list = list(map(str, book_names))
 
-
 # 卡通化模型位置
 # anime_checkPoint_dir = "D:/Workship/Pelbs/Gen/project/AnimeGAN/checkpoint/AnimeGAN_Hayao_lsgan_300_300_1_3_10"
 anime_checkPoint_dir = configer.run_param("ANIMEGAN_CHECKPOINT_PATH")
@@ -46,6 +45,7 @@ error_output_path = work_path + "error/"
 error_book_output_path = error_output_path + "book/"
 if os.path.exists(error_book_output_path):
     utils.del_file(error_book_output_path)
+
 
 def pdf_to_excel():
     for index, id_ in enumerate(book_idx_list):

@@ -1,10 +1,11 @@
 from aip import AipSpeech
 from script.base.configer import configer
 
+
 class BaiduTTS:
     def __init__(self):
 
-        self.appid =  configer.program_param("BD_APP_ID")  # 申请的账号
+        self.appid = configer.program_param("BD_APP_ID")  # 申请的账号
         self.appkey = configer.program_param("BD_APP_KEY")  # 申请的账号
         self.secretkey = configer.program_param("BD_SECRET_KEY")  # 账号密码
         self.client = AipSpeech(self.appid, self.appkey, self.secretkey)
@@ -26,4 +27,3 @@ class BaiduTTS:
 
 
 bdTTSApi = BaiduTTS()
-

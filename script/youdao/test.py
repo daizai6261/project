@@ -1,5 +1,6 @@
 import requests
 
+
 def getPhonetics(word):
     url = f'https://api.dictionaryapi.dev/api/v2/entries/en_US/{word}'
     response = requests.get(url)
@@ -8,8 +9,8 @@ def getPhonetics(word):
         US = ''
         res = response.json()
         for phonetics in response.json():
-            if("phonetic" in phonetics):
-                for phonetic in  phonetics["phonetics"]:
+            if ("phonetic" in phonetics):
+                for phonetic in phonetics["phonetics"]:
                     if "audio" in phonetic or len(phonetic["audio"]) >= 0:
                         if 'uk' in phonetic["audio"] and phonetic["text"] != "":
                             UK = phonetic["text"]
@@ -25,5 +26,6 @@ def getPhonetics(word):
     except:
         print("没有音标")
         return ['', '']
+
 
 print(getPhonetics("none"))

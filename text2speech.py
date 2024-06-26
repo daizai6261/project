@@ -13,6 +13,7 @@ from script.utils.utils import utils
 import shutil
 
 
+
 def get_file_from_folder(folder_path):
     """从文件夹中获取需要的txt文件
     :param folder_path: 文件夹路径
@@ -124,6 +125,7 @@ def txt_to_speech(txt_file_path, out_put_path, start_line=1, file_name_index=0, 
     for line in lines:
         try:
             file_name, word_contents = get_text_needed(line, file_name_index, word_contents_ranges)
+
             call_api(word_contents, out_put_path, file_name)
         except ValueError as e:
             print(f"Skipping line due to error: {e}")
@@ -171,12 +173,15 @@ def explain_text_to_audio(txt_file_path, out_put_path, start_line=1, file_name_i
             call_api(word_contents, unit_dir_path, audio_file_name)
             print(f"生成音频文件 '{audio_file_name}' 并保存到 '{unit_dir_path}'")
 
+
         except ValueError as e:
             print(f"Skipping line due to error: {e}")
 
 
 def add_prefix_by_postfix(prefix: str, postfix: str, folder_path: str):
+
     """根据后缀名为文件夹中的文件命名添加前缀名（递归处理子文件夹）
+
     Params:
         prefix: 需要添加的前缀
         postfix: 需要添加前缀的文件的后缀名，如：.mp3
@@ -199,6 +204,7 @@ def add_prefix_by_postfix(prefix: str, postfix: str, folder_path: str):
 
 # Example usage:
 # add_prefix_by_postfix('explain_', '.mp3', '/path/to/folder')
+
 
 
 if __name__ == '__main__':

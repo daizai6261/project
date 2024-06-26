@@ -194,4 +194,3 @@ class SpeechSynthesizer(SpeechReqProtocol):
                 self._ws.keep_running = False
                 self._thread.join()
             self._ws.close()
-

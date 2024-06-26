@@ -155,6 +155,7 @@ if __name__ == '__main__':
     for index, bookIdx in enumerate(book_idx_list):
         utilsFile.set_book_idx(index, bookIdx)
         print("开始处理book", bookIdx)
+
         #clear_dest_folder()
 
         ####### 图片转xls
@@ -162,12 +163,14 @@ if __name__ == '__main__':
         # print("识别完毕")
 
         ####### xls转txt
+
         # pXlsx.xls2txt(False, True)  # 第一个是否翻译
         # print("位置转换完毕")
         #
         ###### 翻译
         #pXlsx.xls2txt(True, True)  # 第一个是否翻译
         # print("翻译完毕")
+
 
         #########合并成最终文件夹
         #copy_dest_folder()
@@ -178,6 +181,7 @@ if __name__ == '__main__':
 
         ###### txt合成音频
         #txt2audio()
+
 
         # 合成讲解音频
         gen_explain_audio()

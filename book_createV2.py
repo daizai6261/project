@@ -30,12 +30,13 @@ book_idxs = data_sheet1.col_values(0)[1:]
 book_idx_list = list(map(int, book_idxs))  # 99999       73, 82
 # 卡通化模型位置
 # anime_checkPoint_dir = "D:/Workship/Pelbs/Gen/project/AnimeGAN/checkpoint/AnimeGAN_Hayao_lsgan_300_300_1_3_10"
-anime_checkPoint_dir =  configer.run_param("ANIMEGAN_CHECKPOINT_PATH")
+anime_checkPoint_dir = configer.run_param("ANIMEGAN_CHECKPOINT_PATH")
 work_path = configer.run_param("PROJECT_PATH")
 error_output_path = work_path + "error/"
 error_book_output_path = error_output_path + "book/"
 if os.path.exists(error_book_output_path):
     utils.del_file(error_book_output_path)
+
 
 def book_create():
     for index, id_ in enumerate(book_idx_list):
@@ -63,6 +64,7 @@ def book_create():
         # is_valid_unit_file = utils.tab_valid(osd_book_unit_file, error_book_output_path, id_, 4, 4)
         # if (is_valid_audio_file and is_valid_unit_file):
         utils.modify_configs_v3(osd_en_audio_file, dest_en_audio_file)
+
 
 def book_valid():
     is_valid = True
