@@ -114,16 +114,16 @@ def txt_to_speech(txt_file_path, out_put_path, start_line=1, file_name_index=0, 
     else:
         raise ValueError(f"输出目标文件夹 {out_put_path} 已存在，请检查")
 
-    base_name = os.path.splitext(os.path.basename(txt_file_path))[0]
-    sub_dir_path = os.path.join(out_put_path, base_name)
-    if not os.path.exists(sub_dir_path):
-        utils.mkdir(sub_dir_path)
+    # base_name = os.path.splitext(os.path.basename(txt_file_path))[0]
+    # sub_dir_path = os.path.join(out_put_path, base_name)
+    # if not os.path.exists(sub_dir_path):
+    #     utils.mkdir(sub_dir_path)
 
     lines = read_file(txt_file_path, start_line)
     for line in lines:
         try:
             file_name, word_contents = get_text_needed(line, file_name_index, word_contents_ranges)
-            call_api(word_contents, sub_dir_path, file_name)
+            call_api(word_contents, out_put_path, file_name)
         except ValueError as e:
             print(f"Skipping line due to error: {e}")
 
@@ -138,7 +138,7 @@ def add_prefix_by_postfix(prefix: str, postfix: str, folder_path: str):
         add_prefix_by_postfix('explain_', '.mp3', '/path/to/folder')
     """
     if not os.path.isdir(folder_path):
-        print(f"文件夹路径 '{folder_path}' 非法")
+        print(f"文件夹路径 '{folder_path}' 不存在，无法为文件名添加前缀")
         return
 
     for filename in os.listdir(folder_path):

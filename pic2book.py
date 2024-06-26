@@ -96,6 +96,8 @@ def gen_explain_audio():
                 explain_txt_files_path.append(os.path.join(root, file))
             if file.startswith("Analys") and file.endswith(".txt"):
                 analys_txt_files_path.append(os.path.join(root, file))
+    if len(explain_txt_files_path) == 0 or len(analys_txt_files_path) == 0:
+        raise Exception(f'目标文件夹{data_path}中未找到解释音频原始文本，请检查前置任务是否已经完成')
 
     for explain_txt_file in explain_txt_files_path:
         txt_to_speech(txt_file_path=explain_txt_file, out_put_path=explain_audio_path, start_line=3, file_name_index=0,
@@ -151,32 +153,32 @@ if __name__ == '__main__':
     for index, bookIdx in enumerate(book_idx_list):
         utilsFile.set_book_idx(index, bookIdx)
         print("开始处理book", bookIdx)
-        clear_dest_folder()
+        #clear_dest_folder()
 
         ####### 图片转xls
         # pORC.orc2xls(True)
-        print("识别完毕")
+        # print("识别完毕")
 
         ####### xls转txt
-        pXlsx.xls2txt(False, True)  # 第一个是否翻译
-        print("位置转换完毕")
-
-        ####### 翻译
-        pXlsx.xls2txt(True, True)  # 第一个是否翻译
-        print("翻译完毕")
+        # pXlsx.xls2txt(False, True)  # 第一个是否翻译
+        # print("位置转换完毕")
+        #
+        ###### 翻译
+        #pXlsx.xls2txt(True, True)  # 第一个是否翻译
+        # print("翻译完毕")
 
         #########合并成最终文件夹
-        copy_dest_folder()
-        print("合并完毕")
+        #copy_dest_folder()
+        # print("合并完毕")
 
-        # #json转txt
-        # pXlsx.json2txt()
+        #json转txt
+        #pXlsx.json2txt()
 
-        ####### txt合成音频
-        # txt2audio()
+        ###### txt合成音频
+        #txt2audio()
 
         # 合成讲解音频
-        gen_explain_audio()
+        gen_explain_audio()  # 需要前面的几个函数正确生成了文本数据才可执行
 
         # 合成单元导学音频
 
