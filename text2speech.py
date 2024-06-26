@@ -157,7 +157,7 @@ def explain_text_to_audio(txt_file_path, out_put_path, start_line=1, file_name_i
             if not os.path.exists(unit_dir_path):
                 os.makedirs(unit_dir_path)
 
-            audio_file_name = '_'.join(file_name.split('_')[1:])
+            audio_file_name = '_'.join(file_name.split('_')[0:])
 
             call_api(word_contents, unit_dir_path, audio_file_name)
             print(f"生成音频文件 '{audio_file_name}' 并保存到 '{unit_dir_path}'")
