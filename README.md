@@ -1,6 +1,6 @@
 # TTS Project
 
-python version=3.7.7
+python version=3.9
 
 requirements.txt has been FREEZE.
 
