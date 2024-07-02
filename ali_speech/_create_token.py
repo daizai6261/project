@@ -82,5 +82,3 @@ class AccessToken:
 
         _log.error(response.text)
         return None, None
-
-

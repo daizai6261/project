@@ -1,5 +1,6 @@
 import xlrd
 
+
 from script.base.configer import configer
 
 
@@ -50,8 +51,10 @@ class UtilsFile():
         self.paths["dest_texture_path"] = self.paths["dest_path"] + "osd_texture/"
         self.paths["dest_config_path"] = self.paths["dest_path"] + "osd_configs/"
         self.paths["dest_sound_path"] = self.paths["dest_path"] + "osd_sound/"
+
         self.paths["dest_explain_audio_path"] = self.paths["dest_path"] + "explain_audio/"
         self.paths["dest_analys_audio_path"] = self.paths["dest_path"] + "analys_audio/"
+
         self.paths["dest_all_sound_path"] = self.paths["dest_path"] + "all_sound/"
         self.paths["dest_en_audio_file"] = self.paths["dest_config_path"] + "EnglishAudio_" + self.str_book_idx + ".txt"
         self.paths["dest_all_audio_file"] = self.paths["dest_config_path"] + "AllAudio_" + self.str_book_idx + ".txt"

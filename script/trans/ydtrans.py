@@ -7,14 +7,15 @@ from aliyunsdkcore.acs_exception.exceptions import ServerException
 from aliyunsdkalimt.request.v20181012 import TranslateRequest
 from aliyunsdkcore.request import CommonRequest
 
-
 import sys
 import uuid
 import requests
 import hashlib
 import time
 from imp import reload
-#reload(sys)
+
+
+# reload(sys)
 
 
 class YdTrans:
@@ -43,12 +44,13 @@ class YdTrans:
                 'action': 'FY_BY_REALTlME',
                 }
         # headers参数
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'}
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'}
         data = urllib.parse.urlencode(data)
         data = bytes(data, 'utf-8')
         request = urllib.request.Request(request_url, data, headers=headers)
 
-        #try:
+        # try:
         response = urllib.request.urlopen(request)
         html = response.read().decode('utf-8')
         print('翻译html：', html)
@@ -60,15 +62,15 @@ class YdTrans:
             print('translateResult：', translateResult[i]['tgt'])
             chinese = chinese + translateResult[i]['tgt']
         print('翻译chinese：', chinese)
-        return  True, chinese
-       # except Exception as e:
-           # return False , e
+        return True, chinese
+
+    # except Exception as e:
+    # return False , e
 
     def encrypt(self, signStr):
         hash_algorithm = hashlib.sha256()
         hash_algorithm.update(signStr.encode('utf-8'))
         return hash_algorithm.hexdigest()
-
 
     def truncate(self, q):
         if q is None:
@@ -76,12 +78,10 @@ class YdTrans:
         size = len(q)
         return q if size <= 20 else q[0:10] + str(size) + q[size - 10:size]
 
-
     def do_request(self, data):
         headers = {'Content-Type': 'application/x-www-form-urlencoded'}
         YOUDAO_URL = 'https://openapi.youdao.com/api'
         return requests.post(YOUDAO_URL, data=data, headers=headers)
-
 
     def trans(self, text):
         data = {}
@@ -97,17 +97,17 @@ class YdTrans:
         data['q'] = text
         data['salt'] = salt
         data['sign'] = sign
-        #data['vocabId'] = "您的用户词表ID"
+        # data['vocabId'] = "您的用户词表ID"
 
         response = self.do_request(data)
         result = json.loads(response.content)
 
         chinese = ""
-        if result['errorCode'] == "0" :
+        if result['errorCode'] == "0":
             chinese = result['translation'][0]
-            return  True, chinese
-        else :
-            return  False, chinese
+            return True, chinese
+        else:
+            return False, chinese
 
 
-ydTransApi = YdTrans('en','zh-CHS')
+ydTransApi = YdTrans('en', 'zh-CHS')
