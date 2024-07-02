@@ -18,10 +18,7 @@ import xlrd
 
 
 '''
-# 绘本 474,475,476,477,478,479,480,481,482,483,484,485,486,487,488,489,490,491,492,493,494,495
 
-
-# 341,
 # data = xlrd.open_workbook("D:/Workship/Pelbs/Gen/data/系列书名.xlsx")
 data = xlrd.open_workbook(configer.run_param("EXCEL_PATH"))
 data_sheet1 = data.sheets()[0]

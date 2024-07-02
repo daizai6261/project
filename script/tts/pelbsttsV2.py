@@ -26,6 +26,11 @@ class PelbsTTS:
         #self.optimize_audio()
         self.copy_res_word()
 
+
+    def txt2explain(self):
+        #实现合成讲解音频
+        temp_sound_path = utilsFile.get("temp_sound_path")
+
     def tts(self):
         temp_sound_path = utilsFile.get("temp_sound_path")
         utils.recreate_folder(temp_sound_path)

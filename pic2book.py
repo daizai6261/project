@@ -102,7 +102,7 @@ def gen_explain_audio():
     for explain_txt_file in explain_txt_files_path:
         explain_text_to_audio(txt_file_path=explain_txt_file, out_put_path=explain_audio_path, start_line=3,
                               file_name_index=0,
-                              word_contents_ranges=[(1, 2)])
+                              word_contents_ranges=[(2, 2)])
     add_prefix_by_postfix(prefix='explain_', postfix='.mp3', folder_path=explain_audio_path)
     for analys_txt_file in analys_txt_files_path:
         explain_text_to_audio(txt_file_path=analys_txt_file, out_put_path=analys_audio_path, start_line=3,
@@ -159,19 +159,19 @@ if __name__ == '__main__':
 
         ####### 图片转xls
         # pORC.orc2xls(True)
-        # print("识别完毕")
+         #print("识别完毕")
 
         ####### xls转txt
-        # pXlsx.xls2txt(False, True)  # 第一个是否翻译
-        # print("位置转换完毕")
+         #pXlsx.xls2txt(False, True)  # 第一个是否翻译
+         #print("位置转换完毕")
         #
         ###### 翻译
         #pXlsx.xls2txt(True, True)  # 第一个是否翻译
-        # print("翻译完毕")
+         #print("翻译完毕")
 
         #########合并成最终文件夹
         #copy_dest_folder()
-        # print("合并完毕")
+         #print("合并完毕")
 
         #json转txt
         #pXlsx.json2txt()
@@ -181,6 +181,12 @@ if __name__ == '__main__':
 
         # 合成讲解音频
         gen_explain_audio()
+        
+        #txt2explain()
+        #txt2analys()
+        #txt2point()
+
+
 
         # 合成单元导学音频
 
